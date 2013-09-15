@@ -1,0 +1,4 @@
+stratosphere
+============
+
+Cloud Computing project
