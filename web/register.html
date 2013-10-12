@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<!--
+	Halcyonic 3.0 by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Stratosphere</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-panels.min.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel-noscript.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<div id="header-wrapper">
+				<header id="header" class="container">
+					<div class="row">
+						<div class="12u">
+						
+							<!-- Logo -->
+								<h1 style="margin-left:450px"><a href="#" id="logo">Stratosphere</a></h1>
+							
+							<!-- Nav 
+								<nav id="nav">
+									<a href="index.html">Homepage</a>
+									<a href="threecolumn.html">Three Column</a>
+									<a href="twocolumn1.html">Two Column #1</a>
+									<a href="twocolumn2.html">Two Column #2</a>
+									<a href="onecolumn.html">One Column</a>
+								</nav>
+								-->
+
+						</div>
+					</div>
+				</header>
+			</div>
+
+		<!-- Features -->
+			
+
+		<!-- Content -->
+			        <!-- Content -->
+        <div id="content-wrapper">
+            <div id="content">
+                <div class="5grid-layout">
+                    <div class="row">
+                        <div class="6u" style="position:relative; left:318px;">
+
+                            <!-- Main Content -->
+                            <section>
+                                <header>
+                                    
+                                    <h2 style="text-align:center;">Join Us!</h2>
+                                </header>
+                                <form action="registercheck.html" method="post">
+                                    <p style="position:relative; left:70px; font-size: 1.2em;">Username*:<br/>
+                                        <input type="text" name="username" size="60" value="" />
+                                    </p>
+                                    <p style="position:relative; left: 70px; font-size: 1.2em;">Password*:<br/>
+                                        <input type="password" name="password" size="60" value="" />
+                                    </p>
+                                    <p style="position:relative; left: 70px; font-size: 1.2em;">Full Name*:<br/>
+                                        <input type="text" name="name" size="60" value="" />
+                                    </p>         
+                                    <p style="position:relative; left: 70px; font-size: 1.2em;">Email:<br/>
+                                        <input type="text" name="email" size="60" value="" />
+                                    </p>
+									<!--
+                                    <p style="position:relative; left: 40px; font-size: 1.2em;">Birthday:</br>
+                                        Month:&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <select name="month" value="Jan">
+                                            <option value="Jan">Jan</option>
+                                            <option value="Feb">Feb</option>
+                                            <option value="Mar">Mar</option>
+                                            <option value="Apr">Apr</option>
+                                            <option value="May">May</option>
+                                            <option value="Jun">Jun</option>
+                                            <option value="Jul">Jul</option>
+                                            <option value="Aug">Aug</option>
+                                            <option value="Sep">Sep</option>
+                                            <option value="Oct">Oct</option>
+                                            <option value="Nov">Nov</option>
+                                            <option value="Dec">Dec</option>
+                                        </select>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Day:&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <?php
+                                        echo "<select name=day>";
+                                        for ($i = 1; $i <= 31; $i++) {
+                                            echo "<option value=$i>$i</option>"; ////if (isset($_POST['month'])) {
+                                        }
+                                        echo "</select>";
+                                        ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Year:&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <?php
+                                        echo "<select name=year>";
+                                        for ($i = 2013; $i >= 1900; $i--) {
+                                            echo "<option value=$i>$i</option>"; ////if (isset($_POST['month'])) {
+                                        }
+                                        echo "</select>";
+                                        ?>
+                                    </p>
+                                    <p style="position:relative; left: 40px; font-size: 1.2em;">Your Movie Stytle:</br>
+                                        First Choice:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <select name="p1" style="width:15em;">
+                                            <option value="Music">Music</option>
+                                            <option value="Documentary">Documentary</option>
+                                            <option value="Comedy">Comedy</option>
+                                            <option value="Animation">Animation</option>
+                                            <option value="Drama">Drama</option>
+                                            <option value="Western">Western</option>
+                                            <option value="Fantasy">Fantasy</option>
+                                            <option value="TV Classics">TV Classics</option>
+                                            <option value="Thriller">Thriller</option>
+                                            <option value="Mystery/Suspense">Mystery/Suspense</option>
+                                            <option value="Horror">Horror</option>
+                                            <option value="Foreign">Foreign</option>
+                                            <option value="Action/Adventure">Action/Adventure</option>
+                                            <option value="SciFi">SciFi</option>
+                                            <option value="Sports">Sports</option>
+                                            <option value="War">War</option>
+                                            <option value="History Channel">History Channel</option>
+                                            <option value="Dance/Ballet">Dance/Ballet</option>
+                                        </select>
+                                        </br>
+                                        Second Choice:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <select name="p2" style="width:15em;">
+                                            <option value="Documentary">Documentary</option>
+                                                   <option value="Music">Music</option>
+                                            <option value="Comedy">Comedy</option>
+                                            <option value="Animation">Animation</option>
+                                            <option value="Drama">Drama</option>
+                                            <option value="Western">Western</option>
+                                            <option value="Fantasy">Fantasy</option>
+                                            <option value="TV Classics">TV Classics</option>
+                                            <option value="Thriller">Thriller</option>
+                                            <option value="Mystery/Suspense">Mystery/Suspense</option>
+                                            <option value="Horror">Horror</option>
+                                            <option value="Foreign">Foreign</option>
+                                            <option value="Action/Adventure">Action/Adventure</option>
+                                            <option value="SciFi">SciFi</option>
+                                            <option value="Sports">Sports</option>
+                                            <option value="War">War</option>
+                                            <option value="History Channel">History Channel</option>
+                                            <option value="Dance/Ballet">Dance/Ballet</option>
+                                        </select>
+                                        </br>
+                                        Third Choice:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <select name="p3" style="width:15em;">
+                                            <option value="Comedy">Comedy</option>
+                                                    <option value="Music">Music</option>
+                                            <option value="Documentary">Documentary</option>
+                                            <option value="Animation">Animation</option>
+                                            <option value="Drama">Drama</option>
+                                            <option value="Western">Western</option>
+                                            <option value="Fantasy">Fantasy</option>
+                                            <option value="TV Classics">TV Classics</option>
+                                            <option value="Thriller">Thriller</option>
+                                            <option value="Mystery/Suspense">Mystery/Suspense</option>
+                                            <option value="Horror">Horror</option>
+                                            <option value="Foreign">Foreign</option>
+                                            <option value="Action/Adventure">Action/Adventure</option>
+                                            <option value="SciFi">SciFi</option>
+                                            <option value="Sports">Sports</option>
+                                            <option value="War">War</option>
+                                            <option value="History Channel">History Channel</option>
+                                            <option value="Dance/Ballet">Dance/Ballet</option>
+                                        </select>
+                                    </p>
+                                    <p style="position:relative; left: 40px; font-size: 1.2em;">Street:<br/>
+                                        <input type="text" name="street" size="60" value="" />
+                                    </p>
+                                    <p style="position:relative; left: 40px; font-size: 1.2em;">City:<br/>
+                                        <input type="text" name="city" size="60" value="" />
+                                    </p>
+                                    <p style="position:relative; left: 40px; font-size: 1.2em;">State:<br/>
+                                        <input type="text" name="state" size="60" value="" />
+                                    </p>
+                                    <p style="position:relative; left: 40px; font-size: 1.2em;">Zip-code:<br/>
+                                        <input type="text" name="zip" size="60" value="" />
+                                    </p>
+							-->
+                                    <p style="position:relative; left: 200px;">
+                                        <input style="padding: 1px 40px; font-size: 1.5em;" class="button-big" type="submit" name="submit" value="Creat Account" />
+                                    </p>
+                                </form>                                
+                            </section>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<!-- Footer -->
+			
+
+		<!-- Copyright -->
+			<div id="copyright">
+				&copy; Strato Group. All rights reserved.
+			</div>
+
+	</body>
+</html>
