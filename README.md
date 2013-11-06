@@ -1,5 +1,4 @@
-stratosphere
-from OU!!
+Stratosphere
 ============
 
-Cloud Computing project
+Cloud Computing Project!
