@@ -3,50 +3,60 @@ include 'simple_html_dom.php';
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
-$t = microtime();
+define('SUCCESS', 200);
+define('EMPTY_PARAMETER', 201);
+
+if(!isset($_GET['userid']) || !isset($_GET['url']))
+{
+    echo EMPTY_PARAMETER;
+    die();
+}
 
 $userid = $_GET['userid'];
 #echo $userid;
 $url = $_GET['url'];
+
+//get host name
+$host_name = get_host_name($url);
+echo $host_name.'<br>';
+
+function get_host_name($url) {
+    // Extract the host name from the usrl
+    $start = strpos($url, '://');
+    if($start === false) $start = 0;
+    else $start += 3;
+
+    $end = strpos($url, '/', $start);
+    if($end === false) 
+ 	return substr($url, $start);
+    else 
+	return substr($url, $start, $end-$start);
+}
+
 $html = file_get_html($url);
-//echo $html->plaintext;
-// Find all images 
-//foreach($html->find('img') as $element) 
-//       echo $element->src . '<br>';
 
-foreach($html->find('p') as $div)
-    echo $div->innertext . '<br>';
+$title = $html->getElementByTagName('title')->innertext;
+//echo $title;
 
-echo microtime() - $t;
-//echo '<img src="facebook.jpg">';
-// Find all links 
-//foreach($html->find('a') as $element) 
-//       echo $element->href . '<br>';
-//$exe = shell_exec('ls -la');
-//$exe = `ls -la`;
-//echo "<pre>$exe</pre>";
-//echo __FILE__."\n";
-//$filename = "tmp/test.txt";
-//echo $filename;
+foreach($html->find('p') as $p) 
+    echo $p->innertext;
 
-//file_put_contents($filename, 'hello world');
+function is_article($html) {
+//detect whether this page is an article or not
 
-//if(file_exists($filename)) 
-//    echo "file exist";
-//else echo "file not exist";
+}
+// Get first p
+$firstP = $html->find('p', 0);
+$node = $firstP->prev_sibling();
+while(isset($node)) {
+    echo $node->tag;
+    $node = $node->prev_sibling();
+}
+echo $firstP->innertext;
 
-//$e = `touch test.txt`;
-//$e = `chmod 777 test.txt`;
-//$file = fopen( $filename, "w" );
+// start from the firstP or start from the previous h 
 
-//if( $file == false )
-//{
-//   echo ( "Error in opening new file" );
-//   exit();
-//}
-//fwrite( $file, "This is a test\n");
-//fclose( $file );
-#identify whether this page is an article or not
 $html->clear(); 
 unset($html);
+echo SUCCESS;
 ?>
