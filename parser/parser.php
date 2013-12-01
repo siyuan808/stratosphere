@@ -23,6 +23,7 @@ $url = $_GET['url'];
 
 //--------------------------------------------------get host name
 $host_name = get_host_name($url);
+$protocol;
 //debug($host_name.'<br>');
 
 function get_host_name($url) {
@@ -31,6 +32,7 @@ function get_host_name($url) {
     if($start === false) {
         die(''.NOT_VALID_URL);
     }
+    $GLOBAL['protocol'] = substr($url, 0, $start+3);
     $start += 3;
     $end = strpos($url, '/', $start);
     if($end === false) 
@@ -88,14 +90,18 @@ function is_article() {
 //-----------------------------------------It is an article, start parsing-----------------
 $startNode = find_start_node();
 //debug($title);
+//debug($startNode->outertext);
 // Get first start tag, from which to start parsing.
 function isMatchTitle($h, $t) {
+   if(!isset($h)) return false;
    $hwords = explode(' ', $h); 
    $match = 0;
    foreach($hwords as $hword) {
+        //echo $hword.'<br>';
+        if(!isset($hword) || empty($hword)) continue;
 	$isIntitle = strpos($t, $hword);
 	if($isIntitle === false) continue;
-	$match++;
+	else $match++;
    }
    if($match >= count($hwords) * 0.9)
 	return true;
@@ -109,21 +115,32 @@ function find_start_node() {
         debug($node->tag);
         $node = $node->prev_sibling();
     }*/
-    $hs = $html->find('h1,h2,h3,h4,h5,h6,h7');
+    $hs = $html->find('h1,h2,h3,h4,h5,h6');
     //debug($titleTagText.'<br>');
+    $titleTagText = utf8_encode($titleTagText);
     if(is_array($hs)) {
+        foreach($hs as $h) {
+	    $h->plaintext = utf8_encode($h->plaintext);
+	    //debug($h->plaintext."<br>".$titleTagText."<br><br>");
+	    if(strcasecmp($h->plaintext, $titleTagText) == 0) {
+		return $h;
+	    }
+	}
 	foreach($hs as $h)
 	{
-	    //debug($h->plaintext);
 	    if(isMatchTitle($h->plaintext, $titleTagText)) 
 	    {
 		$title = $h->plaintext;
 		return $h;
 	    }
 	}
+        // there is no match h tags
+	echo $paras[0]->outertext;
+	return $paras[0];
     }
     else {
 	//There is no h tags
+	echo $paras[0]->outertext;
 	return $paras[0];
     }
 }
@@ -141,18 +158,30 @@ while(isset($startNode)) {
 function parseNode($node) {
     //parse individual
     if(!isset($node) || !is_object($node)) return;
-    echo $node->tag.'<br>';
+//    echo $node->tag.'<br>';
+    //first figure out if this div is an input div
+
     switch($node->tag) {
-/*        case "p":
+        case "p":
 	case "pre":
+ 	    echo $node->outertext;
 	    break;
 	case "img":
+	    parseSrc($node);
 	    break;
 	case "hr":
+	    echo '<hr>';
 	    break;
-*/    //in case of block
+ 	case "iframe":
+	    parseSrc($node);
+	    break;
+    //in case of block
  	case "span":
 	case "div":
+	    foreach($node->children() as $chk) {
+		if(strpos("input, textarea, button", $chk->tag) !== false)
+		break 2;
+	    }
 	    parseNode($node->first_child());	    
  	    break;
 	default:
@@ -161,7 +190,30 @@ function parseNode($node) {
     parseNode($node->next_sibling());
 } 
 
-//echo SUCCESS;
+//--------------parse an image tag
+function parseSrc($img) {
+    //chage the src into hostname + path if possible
+    //echo $img->src;    
+    global $url;
+    if(strpos($img->src, "://") != false)
+    {
+	echo $img->outertext;
+	return;
+    } else {
+	if(strcmp(substr($img->src, 0, 1), '/') == 0) {
+	    //add host name to the src
+	    $img->src = $protocol.$img->src;
+	    echo $img->outertext;    
+	}
+	else {
+	    //add the prarent
+	    $img->src = substr($url, 0, strrpos($url, '/')).'/'.$img->src;
+	    echo $img->outertext;
+	}
+    }
+}
+
+echo SUCCESS;
 cleanUp();
 function cleanUp() {
     global $html;
