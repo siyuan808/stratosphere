@@ -163,6 +163,10 @@ function parseNode($node) {
 
     switch($node->tag) {
         case "p":
+        case "ul":
+	case "ol":
+	    parsePara($node);
+	    break;
 	case "pre":
  	    echo $node->outertext;
 	    break;
@@ -172,17 +176,22 @@ function parseNode($node) {
 	case "hr":
 	    echo '<hr>';
 	    break;
+        case "h1":
+	case "h2":
+	case "h3":
+	case "h4":
+	case "h5":
+	case "h6":
+	    echo $node->outertext;
+	    break;
  	case "iframe":
 	    parseSrc($node);
 	    break;
     //in case of block
  	case "span":
 	case "div":
-	    foreach($node->children() as $chk) {
-		if(strpos("input, textarea, button", $chk->tag) !== false)
-		break 2;
-	    }
-	    parseNode($node->first_child());	    
+	    if(checkDiv($node) === true) 
+		parseNode($node->first_child());	    
  	    break;
 	default:
 	    break;
@@ -211,6 +220,22 @@ function parseSrc($img) {
 	    echo $img->outertext;
 	}
     }
+}
+
+function parsePara($para) {
+    if(is_array($para->children())) {
+	//echo "has children";
+  	foreach($para->children() as $chk) {
+	    if(strpos("input#button#textarea#", $chk->tag.'#') !== false)
+		return;
+	}	
+    }
+    echo $para->outertext;
+}
+
+function checkDiv($div) {
+
+    return true;
 }
 
 echo SUCCESS;
