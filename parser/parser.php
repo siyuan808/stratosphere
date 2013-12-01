@@ -87,7 +87,7 @@ function is_article() {
 
 //-----------------------------------------It is an article, start parsing-----------------
 $startNode = find_start_node();
-debug($title);
+//debug($title);
 // Get first start tag, from which to start parsing.
 function isMatchTitle($h, $t) {
    $hwords = explode(' ', $h); 
@@ -129,7 +129,38 @@ function find_start_node() {
 }
 
 //----------------------------parsing from startNode
- 
+/*while(isset($startNode) && is_object($startNode)) {
+    echo $startNode->tag;
+    $startNode = $startNode->next_sibling();
+}*/
+while(isset($startNode)) {
+    parseNode($startNode->next_sibling());
+    $startNode = $startNode->parent();
+}
+
+function parseNode($node) {
+    //parse individual
+    if(!isset($node) || !is_object($node)) return;
+    echo $node->tag.'<br>';
+    switch($node->tag) {
+/*        case "p":
+	case "pre":
+	    break;
+	case "img":
+	    break;
+	case "hr":
+	    break;
+*/    //in case of block
+ 	case "span":
+	case "div":
+	    parseNode($node->first_child());	    
+ 	    break;
+	default:
+	    break;
+    }
+    parseNode($node->next_sibling());
+} 
+
 //echo SUCCESS;
 cleanUp();
 function cleanUp() {
