@@ -3,6 +3,11 @@ include 'simple_html_dom.php';
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
+define('DEBUG', 0);
+function debug($msg) {
+    if(defined('DEBUG'))
+	echo $msg;
+}
 define('SUCCESS', 200);
 define('EMPTY_PARAMETER', 201);
 define('NOT_VALID_URL', 202);
@@ -14,12 +19,11 @@ if(!isset($_GET['userid']) || !isset($_GET['url']))
 }
 
 $userid = $_GET['userid'];
-#echo $userid;
 $url = $_GET['url'];
 
 //--------------------------------------------------get host name
 $host_name = get_host_name($url);
-echo $host_name.'<br>';
+//debug($host_name.'<br>');
 
 function get_host_name($url) {
     // Extract the host name from the usrl
@@ -39,15 +43,19 @@ $html = file_get_html(htmlspecialchars_decode($url));
 if(!isset($html) || !is_object($html)) {
     die(''.CANNOT_OPEN);
 }
-$title = $html->find('title',0)->innertext;
-//echo $title;
 
-$paras = $html->find('pre');
+$titleTagText = $html->find('title',0)->plaintext;
+//debug($titleTagText);
+if(!isset($titleTagText) || strlen(trim($titleTagText)) <= 0)
+    $title = 'Unknown'; 
+else $title = $titleTagText;
 
-//foreach($paras as $p)
-//    echo $p->innertext.'<br>';
+$paras = $html->find('p,pre');
 
-
+//if(defined('DEBUG')) {
+    //foreach($paras as $p)
+     	//echo $p->innertext.'<br>';
+//}
 //-----------------------------------------Now check whether this page is an article or not
 if(!is_article()) {
     //insert the isReadble as false and the original link to the database
@@ -63,7 +71,7 @@ function is_article() {
     else {
    	$validPara = 0;
 	foreach($paras as $p) {
-	    echo $p->innertext.'<br>';
+	    //debug($p->innertext.'<br>');
 	    if(isset($p->innertext) && strlen(trim($p->innertext)) > 50) {
 		if(strlen(trim($p->innertext)) > 200)
 		    return true;
@@ -79,20 +87,50 @@ function is_article() {
 
 //-----------------------------------------It is an article, start parsing-----------------
 $startNode = find_start_node();
-
+debug($title);
 // Get first start tag, from which to start parsing.
+function isMatchTitle($h, $t) {
+   $hwords = explode(' ', $h); 
+   $match = 0;
+   foreach($hwords as $hword) {
+	$isIntitle = strpos($t, $hword);
+	if($isIntitle === false) continue;
+	$match++;
+   }
+   if($match >= count($hwords) * 0.9)
+	return true;
+   return false;
+}
+
 function find_start_node() {
-    $firstP = $paras[0];
-    $node = $firstP->prev_sibling();
+    global $html, $paras, $title, $titleTagText, $startNode;
+    /*$node = $firstP->prev_sibling();
     while(isset($node)) {
-        echo $node->tag;
+        debug($node->tag);
         $node = $node->prev_sibling();
+    }*/
+    $hs = $html->find('h1,h2,h3,h4,h5,h6,h7');
+    //debug($titleTagText.'<br>');
+    if(is_array($hs)) {
+	foreach($hs as $h)
+	{
+	    //debug($h->plaintext);
+	    if(isMatchTitle($h->plaintext, $titleTagText)) 
+	    {
+		$title = $h->plaintext;
+		return $h;
+	    }
+	}
+    }
+    else {
+	//There is no h tags
+	return $paras[0];
     }
 }
-echo $startNode->innertext;
 
-// start from the firstP or start from the previous h 
-echo SUCCESS;
+//----------------------------parsing from startNode
+ 
+//echo SUCCESS;
 cleanUp();
 function cleanUp() {
     global $html;
