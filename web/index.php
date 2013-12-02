@@ -36,19 +36,19 @@
                 
 					<div class="inner">
 						<header>
-							<h1><a href="index.html" id="logo">Stratosphere</a></h1>
+							<h1><a href="index.php" id="logo">Stratosphere</a></h1>
 							<hr />
 							<span class="byline">Online Save-for-Later Service</span>
 						</header>
 						<footer>
-							<a href="signup.html" class="button circled scrolly">Sign Up</a>
+							<a href="signup.php" class="button circled scrolly">Sign Up</a>
 						</footer>
 					</div>
 				
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
+							<li><a href="index.php">Home</a></li>
                             <!--
 							<li>
 								<span>Dropdown</span>
@@ -70,9 +70,9 @@
 							</li>
                              -->
                             
-							<li><a href="signup.html">Sign Up</a></li>
-							<li><a href="login.html">Login</a></li>
-							<li><a href="user.html">My Stratosphere</a></li>
+							<li><a href="signup.php">Sign Up</a></li>
+							<li><a href="login.php">Login</a></li>
+							<li><a href="user.php">My Stratosphere</a></li>
 						</ul>
 					</nav>
 

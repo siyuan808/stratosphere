@@ -1,12 +1,16 @@
+<?php
+if (isset($_COOKIE['userid'])) {
+	//echo 'Welcome ' . $_COOKIE['name'];
+} else {
+    header('Location: login.php');
+}
+?>
+
 <!DOCTYPE HTML>
-<!--
-	Helios 1.5 by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
 	<head>
-		<title>Sign Up - Stratosphere</title>
+		<title>My Stratosphere - Stratosphere</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -33,37 +37,37 @@
 				<!-- Inner -->
 					<div class="inner">
 						<header>
-							<h1><a href="index.html" id="logo">Stratosphere</a></h1>
+							<h1><a href="index.php" id="logo">Stratosphere</a></h1>
 						</header>
 					</div>
 				
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
-							<li><a href="index.html">Home</a></li>
-                            <!--
+							<li><a href="index.php">Home</a></li>
+                            
 							<li>
-								<span>Dropdown</span>
+								<span>Preferences</span>
 								<ul>
-									<li><a href="#">Lorem ipsum dolor</a></li>
-									<li><a href="#">Magna phasellus</a></li>
-									<li><a href="#">Etiam dolore nisl</a></li>
+									<li><a href="#">Add URL</a></li>
+									<li><a href="#">Favourites</a></li>
+									
 									<li>
-										<span>And a submenu &hellip;</span>
+										<span>Options</span>
 										<ul>
-											<li><a href="#">Lorem ipsum dolor</a></li>
-											<li><a href="#">Phasellus consequat</a></li>
-											<li><a href="#">Magna phasellus</a></li>
-											<li><a href="#">Etiam dolore nisl</a></li>
+											<li><a href="#">Option 1</a></li>
+											<li><a href="#">Option 2</a></li>
+											<li><a href="#">Option 3</a></li>
+											<li><a href="#">Option 4</a></li>
 										</ul>
 									</li>
-									<li><a href="#">Veroeros feugiat</a></li>
+									<li><a href="#">Help</a></li>
 								</ul>
 							</li>
-                            -->
-							<li><a href="signup.html">Sign Up</a></li>
-							<li><a href="login.html">Login</a></li>
-							<li><a href="user.html">My Stratosphere</a></li>
+							<li><a href="friend.php">Friends</a></li>
+							<li><a href="user.php">My Stratosphere</a></li>
+							<li><a href="logout.php">Log Out</a></li>
+							
 						</ul>
 					</nav>
 
@@ -77,28 +81,46 @@
 						<div class="12u skel-cell-important" id="content">
 							<article id="main" class="special">
 								<header>
-									<h2><a href="#">Sign Up</a></h2>
-                                    <form action="signup.html" method="post"> 
-                                    
-										Username*:<br/>
-                                        <input type="text" name="username" size="60" value="" /><br/>
-                                        </p>
-										Password*:<br/>
-                                        <input type="password" name="password" size="60" value="" /><br/>
-                                        </p>
-                                        Email*:<br/>
-                                         <input type="text" name="email" size="60" value="" /><br/>
-									</p>	
-                                    <input class="button" type="submit" name="submit" value="Creat Account" /><br/>
-                                    </p>
-								   Already have an account?&nbsp;&nbsp;&nbsp;<a href="login.html">Login!</a>
-                                </form>
+									<h2><a href="user.php">Hello, <?php echo $_COOKIE['name'] ?>!</a></h2>
 									
 								</header>
-								
 							</article>
 						</div>
 					</div>
+                    <hr/>
+                    
+                    <div class="row">
+						<article class="4u special">
+							<a href="http://www.google.com" class="image featured"><img src="pic/google.jpg" alt="" /></a>
+							<header>
+								<h3><a href="http://www.google.com">Google.com</a></h3>
+							</header>
+							<p>
+								Google is an American multinational corporation specializing in Internet-related services and products. These include search, cloud computing, software and online advertising technologies.
+							</p>
+						</article>
+						<article class="4u special">
+							<a href="http://www.facebook.com" class="image featured"><img src="pic/facebook.jpg" alt="" /></a>
+							<header>
+								<h3><a href="http://www.facebook.com">Facebook.com</a></h3>
+							</header>
+							<p>
+								Facebook is an online social networking service. Its name stems from the colloquial name for the book given to students at the start of the academic year by some American university administrations to help students get to know one another.
+							</p>
+						</article>
+						<article class="4u special">
+							<a href="http://www.ufl.edu" class="image featured"><img src="pic/ufl.jpg" alt="" /></a>
+							<header>
+								<h3><a href="http://www.ufl.edu">UFL.com</a></h3>
+							</header>
+							<p>
+								The University of Florida is an American public land-grant, sea-grant, and space-grant research university located on a 2,000-acre campus in Gainesville, Florida.
+							</p>
+						</article>
+						
+                        
+					</div>
+				</div>
 					
 					
 				</div>

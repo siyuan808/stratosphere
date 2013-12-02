@@ -2,18 +2,32 @@
 if(isset($_POST['username'])){
 	$username = $_POST['username'];
 	$password = $_POST['password'];
+	$name = $_POST['name'];
+	$email = $_POST['email'];
 
 	$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
 	mysql_select_db('stratosphere') or die('Could not select database');
 
-
-	$query = "select * from User where username='$username' and password='$password'";
+	$query = "select * from User where username='$username'";
 	$result = mysql_query($query) or die('Query failed:'.mysql_error());
        $row=mysql_fetch_row($result);
-	if($row){ //Correct username and password
+	if(!$row){ //Valid username and password
+		
+		//Find Max User ID
+		$max_query = "select max(uid) from User";
+		$max_result = mysql_query($max_query) or die('Query failed:'.mysql_error());
+		$max_row=mysql_fetch_row($max_result);
+		
+		//New ID = MAX ID + 1;
+		$new_id = intval($max_row[0])+1;
+		
+		//Insert New User Info
+		$insert_query = "INSERT INTO `stratosphere`.`User` (`uid`, `username`, `password`, `name`, `email`) VALUES ('$new_id', '$username', '$password', '$name', '$email')";
+		mysql_query($insert_query) or die('Query failed:'.mysql_error());
+		
 		//Set Cookie
-		setcookie('userid', $row[0], time()+60*60);
-		setcookie('name', $row[3], time()+60*60);
+		setcookie('userid', $new_id, time()+60*60);
+		setcookie('name', $name, time()+60*60);
 		header('Location: user.php');
 	     //header("Location:user.html?uname=$name");
 	     //echo "<meta http-equiv=refresh content=10;URL=http://ec2-67-202-55-42.compute-1.amazonaws.com/user.html>";
@@ -21,11 +35,10 @@ if(isset($_POST['username'])){
         }
 }
 ?>
-
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Login - Stratosphere</title>
+		<title>Sign Up - Stratosphere</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -96,20 +109,25 @@ if(isset($_POST['username'])){
 						<div class="12u skel-cell-important" id="content">
 							<article id="main" class="special">
 								<header>
-									<h2><a href="login.php">Login</a></h2>
-                                   	
-                                    <form action="login.php" method="post">
-<?php if(isset($_POST['username'])) echo "<br/><p\"><b><font color=red>Wrong Username Or Password!</font></b></p>" ?>
-                                    <p">
-
-										Username:<br/>
+									<h2><a href="#">Sign Up</a></h2>
+                                    <form action="signup.php" method="post"> 
+<?php if(isset($_POST['username'])) echo "<br/><p\"><b><font color=red>Username Already Exists!</font></b></p>" ?>
+                                    
+										Username*:<br/>
                                         <input type="text" name="username" size="60" value="" /><br/>
-										Password:<br/>
-                                        <input type="password" name="password" size="60" value="" />
+                                        </p>
+										Password*:<br/>
+                                        <input type="password" name="password" size="60" value="" /><br/>
+                                        </p>
+								Name*:<br/>
+                                         <input type="text" name="name" size="60" value="" /><br/>
+									</p>
+                                        Email*:<br/>
+                                         <input type="text" name="email" size="60" value="" /><br/>
 									</p>	
-                                    <input class="button" type="submit" name="submit" value="Sign In" /><br/>
+                                    <input class="button" type="submit" name="submit" value="Creat Account" /><br/>
                                     </p>
-								    Don't Have An Account?&nbsp;&nbsp;&nbsp;<a href="signup.php">Sign Up Now!</a>
+								   Already have an account?&nbsp;&nbsp;&nbsp;<a href="login.php">Login!</a>
                                 </form>
 									
 								</header>
