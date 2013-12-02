@@ -243,12 +243,18 @@ function checkPara($para) {
     if(is_array($para->children())) {
 	//echo "has children";
 	$sublen = 0;
+//	echo $para->plaintext.'<br>';
   	foreach($para->children() as $chk) {
+	    if(strcmp($chk->tag, "div")===0) return false;
+	    if(strcmp($chk->tag, "iframe") === 0) return true;
 	    if(strpos("label#a#input#button#textarea#", $chk->tag.'#') !== false || isset($chk->onclick)) {
-		$sublen += strlen($chk->plaintext);
+//		echo str_replace(' ', '',$chk->plaintext).'#<br>';
+		$sublen += strlen(str_replace(' ','',trim($chk->plaintext)));
 	    }
 	}	
-	if(strlen($para->plaintext) <= $sublen) return false;
+//	echo str_replace(' ', '',$para->plaintext).'#<br>';
+	//echo "len:".strlen(str_replace(' ','',$para->plaintext))." sublen: ".$sublen.'<br>';
+	if(strlen(str_replace(' ','',trim($para->plaintext))) <= $sublen) return false;
 	else return true;
     }
     return true;
@@ -272,13 +278,14 @@ function checkDiv($div) {
 		$r = false;
 		break;
 	    case "script":
+	    case "a":
 		if(count($div->children) == 1) return false;
 		break;
 	    default:
 		break;
 	}
     }
-    return $r;
+    return true;
 }
 
 echo SUCCESS;
