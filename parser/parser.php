@@ -162,10 +162,14 @@ function parseNode($node) {
     //first figure out if this div is an input div
 
     switch($node->tag) {
-        case "p":
+        case "ol":
         case "ul":
-	case "ol":
-	    parsePara($node);
+	    if(checkList($node) === true)
+		echo $node->outertext;
+	    break;
+	case "p":
+	    if(checkPara($node) === true)
+		echo $node->outertext;
 	    break;
 	case "pre":
  	    echo $node->outertext;
@@ -182,7 +186,8 @@ function parseNode($node) {
 	case "h4":
 	case "h5":
 	case "h6":
-	    echo $node->outertext;
+	    if(checkPara($node) === true)
+	        echo $node->outertext;
 	    break;
  	case "iframe":
 	    parseSrc($node);
@@ -193,6 +198,9 @@ function parseNode($node) {
 	    if(checkDiv($node) === true) 
 		parseNode($node->first_child());	    
  	    break;
+        case "table":
+	    //echo $node->outertext;
+	    break;
 	default:
 	    break;
     }
@@ -222,20 +230,55 @@ function parseSrc($img) {
     }
 }
 
-function parsePara($para) {
+function checkList($list) {
+    $f = 0;
+    foreach($list->children() as $l) {
+	if(checkPara($l) === false)
+	    $f++;
+    }
+    return ($f < count($list->children()) * 0.5);
+}
+
+function checkPara($para) {
     if(is_array($para->children())) {
 	//echo "has children";
+	$sublen = 0;
   	foreach($para->children() as $chk) {
-	    if(strpos("input#button#textarea#", $chk->tag.'#') !== false)
-		return;
+	    if(strpos("label#a#input#button#textarea#", $chk->tag.'#') !== false || isset($chk->onclick)) {
+		$sublen += strlen($chk->plaintext);
+	    }
 	}	
+	if(strlen($para->plaintext) <= $sublen) return false;
+	else return true;
     }
-    echo $para->outertext;
+    return true;
 }
 
 function checkDiv($div) {
-
-    return true;
+    if(isset($div->onclick)) {
+	return false;
+    }
+    $r = true;
+    foreach($div->children() as $e) {
+	switch($e->tag) {
+	    case "p":
+		if(checkPara($e) === false) $r = false;
+		break;
+	    case "div":
+		//nesty div, the parent one is true
+		if(checkDiv($e) === false) $r = false;
+		break;
+	    case "a":
+		$r = false;
+		break;
+	    case "script":
+		if(count($div->children) == 1) return false;
+		break;
+	    default:
+		break;
+	}
+    }
+    return $r;
 }
 
 echo SUCCESS;
