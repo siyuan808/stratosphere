@@ -1,7 +1,0 @@
-CREATE TABLE `users` (
-    `id` MEDIUMINT( 8 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `username` VARCHAR( 20 ) NOT NULL,
-    `password` VARCHAR( 40 ) NOT NULL,
-    `email` VARCHAR( 80 ) NOT NULL,
-    `active` TINYINT( 1 ) UNSIGNED DEFAULT NULL
-) ENGINE InnoDB
