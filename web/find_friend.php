@@ -7,10 +7,9 @@ if (isset($_COOKIE['userid'])) {
 ?>
 
 <!DOCTYPE HTML>
-
 <html>
 	<head>
-		<title>My Stratosphere - Stratosphere</title>
+		<title>Stratosphere - Friend Result</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -44,14 +43,13 @@ if (isset($_COOKIE['userid'])) {
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
-							<!-- <li><a href="index.php">Home</a></li> -->
+						<!--	<li><a href="index.php">Home</a></li>  -->
                             
 							<li>
 								<span>Preferences</span>
 								<ul>
 									<li><a href="#">Add URL</a></li>
 									<li><a href="#">Favourites</a></li>
-                                    
 									<!--
 									<li>
 										<span>Options</span>
@@ -83,46 +81,45 @@ if (isset($_COOKIE['userid'])) {
 						<div class="12u skel-cell-important" id="content">
 							<article id="main" class="special">
 								<header>
-									<h2><a href="user.php">Hello, <?php echo $_COOKIE['name'] ?>!</a></h2>
-									
+									<h2>Find User Result:</h2>
+                                  
 								</header>
+								<?php 
+								//get data from last page
+								$toname = $_POST['friendname'];
+								$fromuid = $_COOKIE['userid'];
+								
+								$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
+	mysql_select_db('stratosphere') or die('Could not select database');
+	
+	$q_findfriend = "select * from User where lower(username) like lower('%$toname%') union select * from User where lower(name) like lower('%$toname%')";
+	$result_q_findfriend = mysql_query($q_findfriend) or die('Query failed:'.mysql_error());
+	if(mysql_num_rows($result_q_findfriend)==0){
+		echo "<p> Sorry! No records found! Try another one?</p>";
+		 
+    }else{
+			//list up the friend requests the user have
+			echo "<table border=1> <tr align=left>
+                        <th width=15>No.</th>
+                        <th width=50>Friend Name</th> ";
+						
+						
+			$i = 1;
+		while($rowfriends = mysql_fetch_row($result_q_findfriend)and $i <= mysql_num_rows($result_q_findfriend)){
+			$friendname = $rowfriends[3];
+			$send = $rowfriends[0];
+			echo "<tr>
+			<td>$i</td>";
+			echo "<td><a href=frienddisplay.php?UID=$send>$friendname</a></td>";
+  			echo "</tr>";
+			$i++;
+			}
+		echo "</table>";
+			}
+								?>
 							</article>
 						</div>
 					</div>
-                    <hr/>
-                    
-                    <div class="row">
-						<article class="4u special">
-							<a href="http://www.google.com" class="image featured"><img src="pic/google.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.google.com">Google.com</a></h3>
-							</header>
-							<p>
-								Google is an American multinational corporation specializing in Internet-related services and products. These include search, cloud computing, software and online advertising technologies.
-							</p>
-						</article>
-						<article class="4u special">
-							<a href="http://www.facebook.com" class="image featured"><img src="pic/facebook.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.facebook.com">Facebook.com</a></h3>
-							</header>
-							<p>
-								Facebook is an online social networking service. Its name stems from the colloquial name for the book given to students at the start of the academic year by some American university administrations to help students get to know one another.
-							</p>
-						</article>
-						<article class="4u special">
-							<a href="http://www.ufl.edu" class="image featured"><img src="pic/ufl.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.ufl.edu">UFL.com</a></h3>
-							</header>
-							<p>
-								The University of Florida is an American public land-grant, sea-grant, and space-grant research university located on a 2,000-acre campus in Gainesville, Florida.
-							</p>
-						</article>
-						
-                        
-					</div>
-				</div>
 					
 					
 				</div>

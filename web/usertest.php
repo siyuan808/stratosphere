@@ -1,12 +1,29 @@
+<!DOCTYPE HTML>
+
 <?php
 if (isset($_COOKIE['userid'])) {
 	//echo 'Welcome ' . $_COOKIE['name'];
 } else {
     header('Location: login.php');
 }
-?>
 
-<!DOCTYPE HTML>
+$uid = $_COOKIE['userid'];
+$urlid = $_POST['URL_ID'];
+$friend_name = $_POST['fname'];
+								
+$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
+mysql_select_db('stratosphere') or die('Could not select database');
+
+if($friend_name && $urlid){
+	$q_fid = "select * from user where username = '$friend_nam'e";
+	$result_q_fid = mysql_query($q_fid) or die('Query failed:'.mysql_error());	
+	$rowfid = mysql_fetch_row($result_q_findfriend);
+	$fid = $rowfid[1];
+	
+	$q_insert = "insert into Share_Url (from_id, to_id, urlid) values ('$uid', '$fid', '$urlid')";
+	mysql_query($q_insert) or die('Query failed:'.mysql_error());
+}
+?>
 
 <html>
 	<head>
@@ -37,7 +54,7 @@ if (isset($_COOKIE['userid'])) {
 				<!-- Inner -->
 					<div class="inner">
 						<header>
-							<h1><a href="index.php" id="logo">Stratosphere</a></h1>
+							<h1><a href="index.html" id="logo">Stratosphere</a></h1>
 						</header>
 					</div>
 				
@@ -91,40 +108,46 @@ if (isset($_COOKIE['userid'])) {
 					</div>
                     <hr/>
                     
+                    
+                                    
                     <div class="row">
 						<article class="4u special">
-							<a href="http://www.google.com" class="image featured"><img src="pic/google.jpg" alt="" /></a>
+							
 							<header>
-								<h3><a href="http://www.google.com">Google.com</a></h3>
+                            	<?php
+                            		$q1 = "SELECT * FROM Store WHERE uid = '$uid'";
+									$st1 = mysql_query($q1) or die('Query failed:'.mysql_error());
+									while($row1 = mysql_fetch_row($st1)){
+									$urlid = $row1[1];
+											
+									$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
+									$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
+									$row2 = mysql_fetch_row($st2);
+									$title = $row2[3];
+								
+								echo "<h3><a href=#>$title</a></h3>";
+								?>
 							</header>
-							<p>
-								Google is an American multinational corporation specializing in Internet-related services and products. These include search, cloud computing, software and online advertising technologies.
-							</p>
+                            <footer>
+                            	<?php
+                                 echo "<form action=\"favorite.php?URL_ID=$urlid\" \"method=POST\">";
+                                ?>
+                                   
+                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="favorite" value="Favorite" />
+                                
+                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="delete" value="Delete" />
+                                 
+                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="public" value="Public" />
+                                 
+                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="share" value="Share" />
+                                 </form>
+                                 <?php
+									}
+								?>
+							</footer>
 						</article>
-						<article class="4u special">
-							<a href="http://www.facebook.com" class="image featured"><img src="pic/facebook.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.facebook.com">Facebook.com</a></h3>
-							</header>
-							<p>
-								Facebook is an online social networking service. Its name stems from the colloquial name for the book given to students at the start of the academic year by some American university administrations to help students get to know one another.
-							</p>
-						</article>
-						<article class="4u special">
-							<a href="http://www.ufl.edu" class="image featured"><img src="pic/ufl.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.ufl.edu">UFL.com</a></h3>
-							</header>
-							<p>
-								The University of Florida is an American public land-grant, sea-grant, and space-grant research university located on a 2,000-acre campus in Gainesville, Florida.
-							</p>
-						</article>
-						
-                        
 					</div>
-				</div>
-					
-					
+                    
 				</div>
 
 			</div>

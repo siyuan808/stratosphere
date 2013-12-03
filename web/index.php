@@ -1,12 +1,8 @@
 <!DOCTYPE HTML>
-<!--
-	Helios 1.5 by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
 	<head>
-		<title>Stratosphere Online save-for-later Service</title>
+		<title>Stratosphere Online-Save-For-Later Service</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -71,7 +67,7 @@
                              -->
                             
 							<li><a href="signup.php">Sign Up</a></li>
-							<li><a href="login.php">Login</a></li>
+							<li><a href="login.php">Log In</a></li>
 							<li><a href="user.php">My Stratosphere</a></li>
 						</ul>
 					</nav>
@@ -80,9 +76,9 @@
 			
 		<!-- Banner -->
 			<div id="banner">
-				<h2>Hi. You're looking at <strong>Stratosphere</strong>.</h2>
+				<h2>Welcome to <strong>Stratosphere</strong>.</h2>
 				<span class="byline">
-					A online save-for-later Service. We help you read webpages. Put in Stratosphere.
+					An Online Save-For-Later Service.
 				</span>
 			</div>
 
@@ -95,31 +91,38 @@
 						<header>
 							<h3>Save for Later</h3>
 						</header>
-						<p>Put articles, videos or anything into Stratosphere.</p>
+						<p>Save articles, images, videos or anything into Stratosphere.</p>
 					</article>
 				
 					<article>
 						<a class="image featured"><img src="pic/4.png" alt="" /></a>
 						<header>
-							<h3>Save for Later</h3>
+							<h3>Easy Save</h3>
 						</header>
-						<p>Save directly from your browser or apps on smartphone.</p>
+						<p>Save directly from your web browser or apps on smartphone.</p>
 					</article>
 				
 					<article>
 						<a class="image featured"><img src="pic/3.png" alt="" /></a>
 						<header>
-							<h3>View when ready</h3>
+							<h3>Offline Reading</h3>
 						</header>
-						<p>Some of the articles is cached on our server.</p>
+						<p>View any time even without Internet access.</p>
 					</article>
 				
 					<article>
 						<a class="image featured"><img src="pic/2.png" alt="" /></a>
 						<header>
-							<h3>View when ready</h3>
+							<h3>ADs FREE</h3>
 						</header>
-						<p>You can view it whenever you want to read, online, or readable.</p>
+						<p>More readable and AD-FREE for every saved article.</p>
+					</article>
+					<article>
+						<a class="image featured"><img src="pic/5.png" alt="" /></a>
+						<header>
+							<h3>Multi-platform Support</h3>
+						</header>
+						<p>Onece Save. You can access it everywhere.</p>
 					</article>
 
 				</div>
@@ -151,9 +154,9 @@
 							<!-- Contact -->
 								<section class="contact">
 									<header>
-										<h3>Want to contact us?</h3>
+										<h3><a href="#">Contact Us</a></h3>
 									</header>
-									<p>You can following us.</p>
+									<p>Follow Us</p>
 									<ul class="icons">
 										<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
 										<li><a href="#" class="fa fa-facebook solo"><span>Facebook</span></a></li>
@@ -165,7 +168,6 @@
 								<div class="copyright">
 									<ul class="menu">
 										<li>&copy; 2013 Stratosphere. All rights reserved.</li>
-										<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
 									</ul>
 								</div>
 							
