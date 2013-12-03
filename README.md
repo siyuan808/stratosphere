@@ -16,8 +16,8 @@ Features
 
 Future Work
 ============
-Multi-Platform Support
-Site Discover Engine
-API
-User Study
-Refined Parse Algorithm
+1. Multi-Platform Support
+2. Site Discover Engine
+3. API
+4. User Study
+5. Refined Parse Algorithm
