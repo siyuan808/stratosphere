@@ -46,10 +46,11 @@ if (isset($_COOKIE['userid'])) {
 						<!--	<li><a href="index.php">Home</a></li>  -->
                             
 							<li>
-								<span>Preferences</span>
+								<span>Action</span>
 								<ul>
-									<li><a href="#">Add URL</a></li>
-									<li><a href="#">Favourites</a></li>
+									<li><a href="add_url.php">Add URL</a></li>
+									<li><a href="favorites.php">Favourites</a></li>
+                                    				<li><a href="sharedwithme.php">Shared with me</a></li>
 									<!--
 									<li>
 										<span>Options</span>
@@ -120,10 +121,7 @@ if (isset($_COOKIE['userid'])) {
 							</article>
 						</div>
 					</div>
-					
-					
 				</div>
-
 			</div>
 
 		<!-- Footer -->

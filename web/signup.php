@@ -26,11 +26,9 @@ if(isset($_POST['username'])){
 		mysql_query($insert_query) or die('Query failed:'.mysql_error());
 		
 		//Set Cookie
-		setcookie('userid', $new_id, time()+60*60);
-		setcookie('name', $name, time()+60*60);
+		setcookie('userid', $new_id, time()+60*60*5); //Login valid for 5 hours
+		setcookie('name', $name, time()+60*60*5); //Login valid for 5 hours
 		header('Location: user.php');
-	     //header("Location:user.html?uname=$name");
-	     //echo "<meta http-equiv=refresh content=10;URL=http://ec2-67-202-55-42.compute-1.amazonaws.com/user.html>";
 
         }
 }

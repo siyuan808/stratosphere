@@ -1,16 +1,32 @@
+<!DOCTYPE HTML>
+
 <?php
-if (!isset($_COOKIE['userid'])) {
+if (isset($_COOKIE['userid'])) {
+	//echo 'Welcome ' . $_COOKIE['name'];
+} else {
     header('Location: login.php');
 }
 
 $uid = $_COOKIE['userid'];
+$urlid = $_POST['urlid'];
+$fromid = $_POST['fromid'];
 
 $dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
 mysql_select_db('stratosphere') or die('Could not select database');
 
+if(isset($urlid,$fromid)){	
+	
+	if($_POST['action'] == 'Add'){
+		$insert_store = "INSERT INTO Store (uid, urlid, time, is_public, favorite) values ('$uid','$urlid', now(), 0,0);";
+		mysql_query($insert_store) or die('Query failed:'.mysql_error());
+	}else if($_POST['action'] == 'Delete'){
+		$delete_url = "delete from Share_Url where from_id = '$fromid' and to_id = '$uid' and urlid = '$urlid'";
+		mysql_query($delete_url) or die('Query failed:'.mysql_error());
+	}	
+}
+
 ?>
 
-<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>My Stratosphere - Stratosphere</title>
@@ -18,6 +34,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet" type="text/css" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.dropotron.min.js"></script>
 		<script src="js/skel.min.js"></script>
@@ -29,6 +46,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
 			<link rel="stylesheet" href="css/style-desktop.css" />
 			<link rel="stylesheet" href="css/style-noscript.css" />
 		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 	</head>
 	<body class="no-sidebar">
 
@@ -38,13 +56,14 @@ mysql_select_db('stratosphere') or die('Could not select database');
 				<!-- Inner -->
 					<div class="inner">
 						<header>
-							<h1><a href="index.php" id="logo">Stratosphere</a></h1>
+							<h1><a href="index.html" id="logo">Stratosphere</a></h1>
 						</header>
 					</div>
 				
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
+							<!-- <li><a href="index.php">Home</a></li> -->
                             
 							<li>
 								<span>Action</span>
@@ -52,7 +71,6 @@ mysql_select_db('stratosphere') or die('Could not select database');
 									<li><a href="add_url.php">Add URL</a></li>
 									<li><a href="favorites.php">Favourites</a></li>
 									<li><a href="sharedwithme.php">Shared with me</a></li>
-
 								</ul>
 							</li>
 							<li><a href="friend.php">Friends</a></li>
@@ -73,6 +91,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<article id="main" class="special">
 								<header>
 									<h2><a href="user.php">Hello, <?php echo $_COOKIE['name'] ?>!</a></h2>
+									
 								</header>
 							</article>
 						</div>
@@ -81,11 +100,11 @@ mysql_select_db('stratosphere') or die('Could not select database');
                     
                     
                          <?php
-                            $q1 = "SELECT * FROM Store WHERE uid = '$uid'";
+                            $q1 = "SELECT * FROM Share_Url WHERE to_id = '$uid'";
 							$st1 = mysql_query($q1) or die('Query failed:'.mysql_error());
 							if(mysql_num_rows($st1)==0){
 								echo "<header>
-								<h2 style=\"font-size=20px;\"><a href=\"user.php\">No content saved yet! Come on and make your own library!</a></h2>	
+									<h2 style=\"font-size=20px;\"><a href=\"user.php\">No shared content to you yet!</a></h2>	
 								</header>";
 							}
 							$k = 0;
@@ -99,39 +118,37 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<header>
                             	<?php
 									
-									$urlid = $row1[1];
-											
+									$urlid = $row1[2];
+									$personwhosharedwithmeid=$row1[0];
+									
+									
 									$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
 									$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
 									$row2 = mysql_fetch_row($st2);
 									$title = $row2[3];
 								
-								echo "<h3><a href=display.php?urlid=$urlid&uid=$uid>$title</a></h3>";
+								echo "<h3><a href=display.php?urlid=$urlid&uid=$personwhosharedwithmeid>$title</a></h3>";
 								?>
-                                
 							</header>
                             <footer>
                             
-                            	<form style="display:inline;" action="userfunction.php" method="POST">
+                            	<form style="display:inline;" action="sharedwithme.php" method="POST">
                             	<?php
                                  
 								 echo "<input type=\"hidden\" name=\"urlid\" value=\"$urlid\" />";
+								 echo "<input type=\"hidden\" name=\"fromid\" value=\"$personwhosharedwithmeid\" />";
+								 $q_checksave = "select * from Store where uid = '$uid' and urlid = '$urlid'";
+								 $r_checksave = mysql_query($q_checksave) or die('Query failed:'.mysql_error());
+								 if(mysql_num_rows($r_checksave)==0){
                                 ?>
-                                
                                  
-                                 
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Favorite" />
+                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Add" />
+                                 <?php
+								 }
+								 ?>
                                 
                                  <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Delete" />
-                                 
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Public" />
-                                 </form>
-                                
-                                 <form style="display:inline;" action="share.php" method="POST">
-                                
-                                 <input type="hidden" name="urlid" value="<?php echo $urlid ?>" />
-                                 
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Share" />
+                                  
                                  </form>
                                  
 							</footer>
@@ -148,40 +165,37 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<header>
                             	<?php
 									
-									$urlid = $row1[1];
-											
+									$urlid = $row1[2];
+									$personwhosharedwithmeid=$row1[0];
+									
 									$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
 									$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
 									$row2 = mysql_fetch_row($st2);
 									$title = $row2[3];
 								
-								echo "<h3><a href=display.php?urlid=$urlid&uid=$uid>$title</a></h3>";
+								echo "<h3><a href=display.php?urlid=$urlid&uid=$personwhosharedwithmeid>$title</a></h3>";
 								?>
-                                
 							</header>
                             <footer>
                             
-                            	<form style="display:inline;" action="userfunction.php" method="POST">
+                            	<form style="display:inline;" action="sharedwithme.php" method="POST">
                             	<?php
                                  
 								 echo "<input type=\"hidden\" name=\"urlid\" value=\"$urlid\" />";
-                                ?>
-                                
+                                 echo "<input type=\"hidden\" name=\"fromid\" value=\"$personwhosharedwithmeid\" />";
                                  
-                                 
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Favorite" />
+                                 $q_checksave = "select * from Store where uid = '$uid' and urlid = '$urlid'";
+								 $r_checksave = mysql_query($q_checksave) or die('Query failed:'.mysql_error());
+							     if(mysql_num_rows($r_checksave)==0){
+								?>
+                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Add" />
+                                 <?php
+								 }
+								 ?>
                                 
                                  <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Delete" />
-                                 
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Public" />
                                  </form>
                                 
-                                 <form style="display:inline;" action="share.php" method="POST">
-                                
-                                 <input type="hidden" name="urlid" value="<?php echo $urlid ?>" />
-                                 
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Share" />
-                                 </form>
                                  
 							</footer>
 						</article>
@@ -220,9 +234,9 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<!-- Contact -->
 								<section class="contact">
 									<header>
-										<h3><a href=contact.php>Contact Us</a></h3>
+										<h3>Want to contact us?</h3>
 									</header>
-									<p>Follow Us</p>
+									<p>You can following us.</p>
 									<ul class="icons">
 
 										<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
@@ -234,8 +248,9 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<!-- Copyright -->
 								<div class="copyright">
 									<ul class="menu">
-										<li>&copy; 2013 Stratosphere. All Rights Reserved.</li>
-																			</ul>
+										<li>&copy; 2013 Stratosphere. All rights reserved.</li>
+										<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
+									</ul>
 								</div>
 							
 						</div>

@@ -1,31 +1,15 @@
 <?php
-if(isset($_POST['username'])){
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-
-	$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
-	mysql_select_db('stratosphere') or die('Could not select database');
-
-
-	$query = "select * from User where username='$username' and password='$password'";
-	$result = mysql_query($query) or die('Query failed:'.mysql_error());
-       $row=mysql_fetch_row($result);
-	if($row){ //Correct username and password
-		//Set Cookie
-		setcookie('userid', $row[0], time()+60*60*5); //Login valid for 5 hours
-		setcookie('name', $row[3], time()+60*60*5); //Login valid for 5 hours
-		header('Location: user.php');
-	     //header("Location:user.html?uname=$name");
-	     //echo "<meta http-equiv=refresh content=10;URL=http://ec2-67-202-55-42.compute-1.amazonaws.com/user.html>";
-
-        }
+if (isset($_COOKIE['userid'])) {
+	//echo 'Welcome ' . $_COOKIE['name'];
+} else {
+    header('Location: login.php');
 }
 ?>
 
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Login - Stratosphere</title>
+		<title>Stratosphere - Add URL</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -59,30 +43,33 @@ if(isset($_POST['username'])){
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
-							<li><a href="index.php">Home</a></li>
-                            <!--
+						<!--	<li><a href="index.php">Home</a></li>  -->
+                            
 							<li>
-								<span>Dropdown</span>
+								<span>Action</span>
 								<ul>
-									<li><a href="#">Lorem ipsum dolor</a></li>
-									<li><a href="#">Magna phasellus</a></li>
-									<li><a href="#">Etiam dolore nisl</a></li>
+									<li><a href="add_url.php">Add URL</a></li>
+									<li><a href="favorites.php">Favourites</a></li>
+									<li><a href="sharedwithme.php">Shared with me</a></li>
+
+									<!--
 									<li>
-										<span>And a submenu &hellip;</span>
+										<span>Options</span>
 										<ul>
-											<li><a href="#">Lorem ipsum dolor</a></li>
-											<li><a href="#">Phasellus consequat</a></li>
-											<li><a href="#">Magna phasellus</a></li>
-											<li><a href="#">Etiam dolore nisl</a></li>
+											<li><a href="#">Option 1</a></li>
+											<li><a href="#">Option 2</a></li>
+											<li><a href="#">Option 3</a></li>
+											<li><a href="#">Option 4</a></li>
 										</ul>
 									</li>
-									<li><a href="#">Veroeros feugiat</a></li>
+									<li><a href="#">Help</a></li>
+                                    -->
 								</ul>
 							</li>
-                            -->
-							<li><a href="signup.php">Sign Up</a></li>
-							<li><a href="login.php">Login</a></li>
+							<li><a href="friend.php">Friends</a></li>
 							<li><a href="user.php">My Stratosphere</a></li>
+							<li><a href="logout.php">Log Out</a></li>
+							
 						</ul>
 					</nav>
 
@@ -96,31 +83,20 @@ if(isset($_POST['username'])){
 						<div class="12u skel-cell-important" id="content">
 							<article id="main" class="special">
 								<header>
-									<h2><a href="login.php">Login</a></h2>
-                                   	
-                                    <form action="login.php" method="post">
-<?php if(isset($_POST['username'])) echo "<br/><p\"><b><font color=red>Wrong Username Or Password!</font></b></p>" ?>
-                                    <p">
-
-										Username:<br/>
-                                        <input type="text" name="username" size="60" value="" /><br/>
-										Password:<br/>
-                                        <input type="password" name="password" size="60" value="" />
-									</p>	
-                                    <input class="button" type="submit" name="submit" value="Sign In" /><br/>
-                                    </p>
-								    Don't Have An Account?&nbsp;&nbsp;&nbsp;<a href="signup.php">Sign Up Now!</a>
-                                </form>
-									
+									<h2>Please Add An Url: </h2>
+                                  
 								</header>
 								
+                                <form style="text-align:center; font-size:1.5em" name="input" action="parser/parser/parser.php" method="GET">
+								
+								URL Address: <input type="text" name="url" size="70">
+								<input style="padding: 1px 5px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" value="submit">
+								</form>
+
 							</article>
 						</div>
 					</div>
-					
-					
 				</div>
-
 			</div>
 
 		<!-- Footer -->

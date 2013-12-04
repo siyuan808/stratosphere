@@ -1,9 +1,35 @@
+<?php
+if (!isset($_COOKIE['userid'])) {
+	header('Location: login.php');
+}
+if (!isset($_GET['urlid'])){
+	header('Location: user.php');
+}
+
+$urlid = $_GET['urlid'];
+$userid = $_GET['uid'];
+//$userid = $_COOKIE['userid'];
+$pagetodisplay = file_get_contents('https://s3.amazonaws.com/ec2-67-202-55-42-stratos-userid-'.$userid.'/'.$urlid.'.html');
+$title = '';
+	//$username = $_POST['username'];
+	//$password = $_POST['password'];
+	//$name = $_POST['name'];
+	//$email = $_POST['email'];
+
+	$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
+	mysql_select_db('stratosphere') or die('Could not select database');
+
+	$query = "select * from Url where urlid='$urlid'";
+	$result = mysql_query($query) or die('Query failed:'.mysql_error());
+       $row=mysql_fetch_row($result);
+	if($row){	//echo $row;	
+		$title=$row[3];	
+		$is_readable=$row[2];
+		$urladdress=$row[1];
+        }else {echo "No Matching Title";}
+?>
+
 <!DOCTYPE HTML>
-<!--
-	Helios 1.5 by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
 		<title>My Stratosphere - Stratosphere</title>
@@ -23,7 +49,12 @@
 			<link rel="stylesheet" href="css/style-desktop.css" />
 			<link rel="stylesheet" href="css/style-noscript.css" />
 		</noscript>
-		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
+		<script type="text/javascript">
+		function submitform(tosubmit)
+		{
+		  document.getElementById(tosubmit).submit();
+		}
+		</script>
 	</head>
 	<body class="no-sidebar">
 
@@ -40,30 +71,59 @@
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
-							<li><a href="index.php">Home</a></li>
-                            
 							<li>
-								<span>Preferences</span>
+								<span>Actions</span>
 								<ul>
-									<li><a href="#">Add URL</a></li>
-									<li><a href="#">Favourites</a></li>
-									
+									<li><a href="add_url.php">Add URL</a></li>
+                                    				<li><a href="sharedwithme.php">Shared With Me</a></li>
+									<li> 
+<form id="favorite" action="userfunction.php" method="POST">
+<input type="hidden" name="urlid" value="<?php echo $urlid; ?>" />
+<input type="hidden" name="action" value="Favorite" />
+<a href="javascript: submitform('favorite')">Make Favorite</a>
+</form>
+									</li>
+									<li> 
+<form id="public" action="userfunction.php" method="POST">
+<input type="hidden" name="urlid" value="<?php echo $urlid; ?>" />
+<input type="hidden" name="action" value="Public" />
+<a href="javascript: submitform('public')">Make Public</a>
+</form>
+									</li>
+									<li> 
+<form id="share" action="userfunction.php" method="POST">
+<input type="hidden" name="urlid" value="<?php echo $urlid; ?>" />
+<input type="hidden" name="action" value="Share" />
+<a href="javascript: submitform('share')">Share</a>
+</form>
+									</li>
+									<li> 
+<form id="delete" action="userfunction.php" method="POST">
+<input type="hidden" name="urlid" value="<?php echo $urlid; ?>" />
+<input type="hidden" name="action" value="Delete" />
+<a href="javascript: submitform('delete')">Delete</a>
+</form>
+									</li>
+
+                                    
+                                   
+                                   
+                                    
+                                    <!--
 									<li>
 										<span>Options</span>
 										<ul>
-											<li><a href="#">Option 1</a></li>
-											<li><a href="#">Option 2</a></li>
-											<li><a href="#">Option 3</a></li>
-											<li><a href="#">Option 4</a></li>
+
+											 <li><a href="share.php">Share</a></li>
 										</ul>
 									</li>
-									<li><a href="#">Help</a></li>
+                                    -->
 								</ul>
 							</li>
-                            
-							<li><a href="signup.php">Sign Up</a></li>
-							<li><a href="login.php">Logout</a></li>
-							<li><a href="user.php">My Stratosphere</a></li>
+                            <li><a href="friend.php">Friends</a></li>
+                            <li><a href="user.php">My Stratosphere</a></li>
+							<li><a href="logout.php">Log Out</a></li>
+							
 						</ul>
 					</nav>
 
@@ -77,40 +137,19 @@
 						<div class="12u skel-cell-important" id="content">
 							<article id="main" class="special">
 								<header>
-									<h2><a href="#">New glimpses of Apple's "spaceship" campus</a></h2>
-									<span class="byline">
-										By Kyle Vanhemert, Wired Updated 4:46 PM EST, Tue November 19, 2013
-									</span>
-								</header>
-								<!--<img src="images/apple.jpg" align="middle" alt="" />-->
-								<p>
-									(CNN) -- At this point, there's a good chance you've seen pictures of 
-									Apple's proposed new headquarters - a 2.8-million-square-foot 
-									spaceship parked in a verdant man-made forest in the northeast corner of Cupertino.	
-							       </p>
-								<section>
-									<p>
-										Since the first dozen or so renderings trickled out in 2011, 
-										however, we haven't gotten a much better sense of what all the 
-										new campus will entail or what it will be like to work there.
-									</p>
-									<p>
-										Until now. Apple may be known for its secrecy, but buried in Cupertino's 
-										municipal archive is a wealth of detail on the project - including more 
-										than 20 previously unseen renderings of the new campus.
-									</p>
-								</section>
-								<section>
-									<header>
-										<h3>Augue euismod feugiat tempus</h3>
-									</header>
-									<p>
-										Pretium tellus in euismod a integer sodales neque. Nibh quis dui quis mattis eget imperdiet venenatis 
-										feugiat. Neque primis ligula cum erat aenean tristique luctus risus ipsum praesent iaculis. Fermentum elit 
-										ut nunc urna volutpat donec cubilia commodo risus morbi. Lobortis vestibulum velit malesuada ante 
-										egestas odio nisl duis sociis purus faucibus morbi. Eget massa mus etiam sociis pharetra magna. 
-									</p>
-								</section>
+									
+								<?php
+								    echo "<h2><a href=\"".$urladdress."\">".$title."</a></h2>";
+									if( $is_readable == 1){
+										echo "<section style=\"text-align:left\"><p>".$pagetodisplay."</p></section>";
+									}else{
+										echo"<br/><h3>Not readable. Redirecting you to the origianl page...</h3>";
+										echo "<meta http-equiv=\"refresh\" content=\"2;url=".$urladdress."\">";
+										
+										}
+									
+								?>
+
 							</article>
 						</div>
 					</div>

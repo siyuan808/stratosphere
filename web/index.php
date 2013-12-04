@@ -1,3 +1,7 @@
+<?php
+if (isset($_COOKIE['userid'])) header('Location: user.php');
+?>
+
 <!DOCTYPE HTML>
 
 <html>

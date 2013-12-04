@@ -47,10 +47,11 @@ if (isset($_COOKIE['userid'])) {
 						<!--	<li><a href="index.php">Home</a></li> -->
                             
 							<li>
-								<span>Preferences</span>
+								<span>Action</span>
 								<ul>
-									<li><a href="#">Add URL</a></li>
-									<li><a href="#">Favourites</a></li>
+									<li><a href="add_url.php">Add URL</a></li>
+									<li><a href="favorites.php">Favourites</a></li>
+                                   				<li><a href="sharedwithme.php">Shared with me</a></li>
 									<!--
 									<li>
 										<span>Options</span>
@@ -87,7 +88,9 @@ if (isset($_COOKIE['userid'])) {
 								
 								if($_GET["UID"]){
 									
+									//friend id
 									$toid = $_GET["UID"];
+									
 									if ($toid != $queryid){
 										//database connection
 										$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") or die("Unable to connect to MySQL");
@@ -116,11 +119,13 @@ if (isset($_COOKIE['userid'])) {
 										$result_pending1 = mysql_query($q_friendpending1) or die('Query failed:'.mysql_error());
 									if(mysql_num_rows($result_pending1)!=0){
 										echo "<p>You've sent the friend request.</p>";
+										echo "</header></article></div></div><hr/>";
 										}else{
 											//waiting your response
 											$result_pending2 = mysql_query($q_friendpending2) or die('Query failed:'.mysql_error());
 											if(mysql_num_rows($result_pending2)!=0){
 										echo "<p>User is waiting for your response to his/her request.</p>";
+										echo "</header></article></div></div><hr/>";
 										}else{
 											echo "<p> not friend yet! </p>";
 											echo "<form action=\"addfriend.php\" method=\"post\" id=\"addfiendform\">
@@ -130,17 +135,82 @@ if (isset($_COOKIE['userid'])) {
 	
 	<input style=\"padding: 5px 42px; \" class=\"button\" type=\"submit\" value=\"Add friend\"/>
 	</form>";
+	echo "</header></article></div></div><hr/>";
 											}
 											
 										}
 										
-										
-										
-											
-											
     									}else{
 											echo "<p> you are friends. </p>";
-											}
+											
+											echo "</header></article></div></div><hr/>";
+					
+											//display friend's hoomepage.
+											$q1 = "SELECT * FROM Store WHERE uid = '$toid' and is_public = 1";
+							$st1 = mysql_query($q1) or die('Query failed:'.mysql_error());
+							
+							/*
+							echo $q1;
+							while($row1 = mysql_fetch_row($st1)){
+								$urlid = $row1[1];
+								$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
+								$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
+								echo $q2;
+								$row2 = mysql_fetch_row($st2);
+								$title = $row2[3];
+								
+								echo $title;
+								}*/
+							if(mysql_num_rows($st1)==0){
+								echo "<header>
+								<h2 style=\"font-size=20px;\"><a href=\"friend.php\">Your friend has no public contents yet.</a></h2>	
+								</header>";
+							}
+	
+							
+							$k = 0;
+							while($row1 = mysql_fetch_row($st1)){
+								if($k%3==0){
+									echo "<div class=\"row\">
+                    	 
+						<article class=\"4u special\">
+							
+							<header>";
+								$urlid = $row1[1];
+								$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
+								$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
+								$row2 = mysql_fetch_row($st2);
+								$title = $row2[3];
+								
+								echo "<h3><a href=display.php?urlid=$urlid&uid=$toid>$title</a></h3>";
+								echo "</header>
+								<footer></footer>";
+								echo "</article>";
+								$k = $k +1;
+							}
+								while($k%3 != 0 && $row1 = mysql_fetch_row($st1)){
+									echo "<article class=\"4u special\">
+							
+							<header>";
+									$urlid = $row1[1];
+											
+									$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
+									$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
+									$row2 = mysql_fetch_row($st2);
+									$title = $row2[3];
+								
+								echo "<h3><a href=display.php?urlid=$urlid&uid=$toid>$title</a></h3>";
+								echo "</header>
+                            <footer></footer>
+						</article>";	
+						$k = $k +1;
+					}
+					echo "</div>";
+					
+					}
+					
+	
+						}
 										
 											}
 										else{
@@ -150,6 +220,7 @@ if (isset($_COOKIE['userid'])) {
             									 <a href=signup.php>Register</a>!
         										</p>
             									</h3>";
+											echo "</header></article></div></div><hr/>";
 											}
 										}
 									else{
@@ -160,47 +231,13 @@ if (isset($_COOKIE['userid'])) {
 								}
 								else{
 									echo "No UID sent!";
+									echo "</header></article></div></div><hr/>";
 									}
 								?>
 									
 									
-								</header>
-							</article>
-						</div>
-					</div>
-                    <hr/>
+								
                     
-                    <div class="row">
-						<article class="4u special">
-							<a href="http://www.google.com" class="image featured"><img src="pic/google.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.google.com">Google.com</a></h3>
-							</header>
-							<p>
-								Google is an American multinational corporation specializing in Internet-related services and products. These include search, cloud computing, software and online advertising technologies.
-							</p>
-						</article>
-						<article class="4u special">
-							<a href="http://www.facebook.com" class="image featured"><img src="pic/facebook.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.facebook.com">Facebook.com</a></h3>
-							</header>
-							<p>
-								Facebook is an online social networking service. Its name stems from the colloquial name for the book given to students at the start of the academic year by some American university administrations to help students get to know one another.
-							</p>
-						</article>
-						<article class="4u special">
-							<a href="http://www.ufl.edu" class="image featured"><img src="pic/ufl.jpg" alt="" /></a>
-							<header>
-								<h3><a href="http://www.ufl.edu">UFL.com</a></h3>
-							</header>
-							<p>
-								The University of Florida is an American public land-grant, sea-grant, and space-grant research university located on a 2,000-acre campus in Gainesville, Florida.
-							</p>
-						</article>
-						
-                        
-					</div>
 				</div>
 					
 					

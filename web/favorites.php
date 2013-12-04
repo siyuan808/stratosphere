@@ -1,5 +1,9 @@
+<!DOCTYPE HTML>
+
 <?php
-if (!isset($_COOKIE['userid'])) {
+if (isset($_COOKIE['userid'])) {
+	//echo 'Welcome ' . $_COOKIE['name'];
+} else {
     header('Location: login.php');
 }
 
@@ -10,7 +14,6 @@ mysql_select_db('stratosphere') or die('Could not select database');
 
 ?>
 
-<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>My Stratosphere - Stratosphere</title>
@@ -18,6 +21,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet" type="text/css" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.dropotron.min.js"></script>
 		<script src="js/skel.min.js"></script>
@@ -29,6 +33,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
 			<link rel="stylesheet" href="css/style-desktop.css" />
 			<link rel="stylesheet" href="css/style-noscript.css" />
 		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
 	</head>
 	<body class="no-sidebar">
 
@@ -45,14 +50,14 @@ mysql_select_db('stratosphere') or die('Could not select database');
 				<!-- Nav -->
 					<nav id="nav">
 						<ul>
+							<!-- <li><a href="index.php">Home</a></li> -->
                             
 							<li>
 								<span>Action</span>
 								<ul>
 									<li><a href="add_url.php">Add URL</a></li>
 									<li><a href="favorites.php">Favourites</a></li>
-									<li><a href="sharedwithme.php">Shared with me</a></li>
-
+									<li><a href="sharedwithme.php">Shared With Me</a></li>
 								</ul>
 							</li>
 							<li><a href="friend.php">Friends</a></li>
@@ -73,6 +78,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<article id="main" class="special">
 								<header>
 									<h2><a href="user.php">Hello, <?php echo $_COOKIE['name'] ?>!</a></h2>
+									
 								</header>
 							</article>
 						</div>
@@ -81,11 +87,11 @@ mysql_select_db('stratosphere') or die('Could not select database');
                     
                     
                          <?php
-                            $q1 = "SELECT * FROM Store WHERE uid = '$uid'";
+                            $q1 = "SELECT * FROM Store WHERE uid = '$uid' and favorite = 1";
 							$st1 = mysql_query($q1) or die('Query failed:'.mysql_error());
 							if(mysql_num_rows($st1)==0){
-								echo "<header>
-								<h2 style=\"font-size=20px;\"><a href=\"user.php\">No content saved yet! Come on and make your own library!</a></h2>	
+								echo "<header style=\"font-size=1em;\">
+									<h2><a href=\"user.php\">You have no favorites! Come on and add now!</a></h2>	
 								</header>";
 							}
 							$k = 0;
@@ -108,7 +114,6 @@ mysql_select_db('stratosphere') or die('Could not select database');
 								
 								echo "<h3><a href=display.php?urlid=$urlid&uid=$uid>$title</a></h3>";
 								?>
-                                
 							</header>
                             <footer>
                             
@@ -157,7 +162,6 @@ mysql_select_db('stratosphere') or die('Could not select database');
 								
 								echo "<h3><a href=display.php?urlid=$urlid&uid=$uid>$title</a></h3>";
 								?>
-                                
 							</header>
                             <footer>
                             
@@ -220,9 +224,9 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<!-- Contact -->
 								<section class="contact">
 									<header>
-										<h3><a href=contact.php>Contact Us</a></h3>
+										<h3>Want to contact us?</h3>
 									</header>
-									<p>Follow Us</p>
+									<p>You can following us.</p>
 									<ul class="icons">
 
 										<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
@@ -234,8 +238,9 @@ mysql_select_db('stratosphere') or die('Could not select database');
 							<!-- Copyright -->
 								<div class="copyright">
 									<ul class="menu">
-										<li>&copy; 2013 Stratosphere. All Rights Reserved.</li>
-																			</ul>
+										<li>&copy; 2013 Stratosphere. All rights reserved.</li>
+										<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
+									</ul>
 								</div>
 							
 						</div>
