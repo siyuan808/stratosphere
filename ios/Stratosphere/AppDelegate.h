@@ -10,6 +10,12 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic) int userid;
+@property (nonatomic) bool internetConnected;
 @property (strong, nonatomic) UIWindow *window;
 
+-(void) clearInfo;
+- (void) writeToFile;
 @end

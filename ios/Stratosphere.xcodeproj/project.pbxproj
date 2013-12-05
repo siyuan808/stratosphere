@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E800663C184FA8A600125B31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = E800663B184FA8A600125B31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E8006640184FDD7A00125B31 /* stratos.png in Resources */ = {isa = PBXBuildFile; fileRef = E800663E184FDD7A00125B31 /* stratos.png */; };
+		E800664B184FFA8500125B31 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E800664A184FFA8500125B31 /* SystemConfiguration.framework */; };
+		E800664E184FFBBB00125B31 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = E800664D184FFBBB00125B31 /* Reachability.m */; };
+		E80066501850192A00125B31 /* userinfo.json in Resources */ = {isa = PBXBuildFile; fileRef = E800664F1850192A00125B31 /* userinfo.json */; };
+		E80066541850249600125B31 /* background_640_1136.png in Resources */ = {isa = PBXBuildFile; fileRef = E80066531850249600125B31 /* background_640_1136.png */; };
+		E84F0894184E9C3D00185861 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E84F0891184E9C3D00185861 /* ECSlidingViewController.m */; };
+		E84F08A7184EBBA600185861 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E84F08A6184EBBA600185861 /* DisplayViewController.m */; };
+		E84F08B0184EC8E300185861 /* ArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E84F08AF184EC8E300185861 /* ArticleViewController.m */; };
+		E84F08B4184ECB6900185861 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = E84F08B3184ECB6900185861 /* Article.m */; };
 		E87466D118452D580009FF4E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E87466D018452D580009FF4E /* Foundation.framework */; };
 		E87466D318452D580009FF4E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E87466D218452D580009FF4E /* CoreGraphics.framework */; };
 		E87466D518452D580009FF4E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E87466D418452D580009FF4E /* UIKit.framework */; };
@@ -34,6 +44,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E800663A184FA8A600125B31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		E800663B184FA8A600125B31 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		E800663E184FDD7A00125B31 /* stratos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stratos.png; sourceTree = "<group>"; };
+		E800664A184FFA8500125B31 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E800664C184FFBBB00125B31 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		E800664D184FFBBB00125B31 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		E800664F1850192A00125B31 /* userinfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = userinfo.json; sourceTree = "<group>"; };
+		E80066531850249600125B31 /* background_640_1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_640_1136.png; sourceTree = "<group>"; };
+		E84F0890184E9C3D00185861 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
+		E84F0891184E9C3D00185861 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
+		E84F08A5184EBBA600185861 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
+		E84F08A6184EBBA600185861 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
+		E84F08AE184EC8E300185861 /* ArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArticleViewController.h; path = ../ArticleViewController.h; sourceTree = "<group>"; };
+		E84F08AF184EC8E300185861 /* ArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArticleViewController.m; path = ../ArticleViewController.m; sourceTree = "<group>"; };
+		E84F08B2184ECB6900185861 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
+		E84F08B3184ECB6900185861 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
 		E87466CD18452D580009FF4E /* Stratosphere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stratosphere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E87466D018452D580009FF4E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E87466D218452D580009FF4E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -60,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E800664B184FFA8500125B31 /* SystemConfiguration.framework in Frameworks */,
 				E87466D318452D580009FF4E /* CoreGraphics.framework in Frameworks */,
 				E87466D518452D580009FF4E /* UIKit.framework in Frameworks */,
 				E87466D118452D580009FF4E /* Foundation.framework in Frameworks */,
@@ -79,6 +106,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E8006639184FA89000125B31 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				E800663A184FA8A600125B31 /* JSONKit.h */,
+				E800663B184FA8A600125B31 /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		E84F088F184E9C3D00185861 /* ECSlidingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E800664C184FFBBB00125B31 /* Reachability.h */,
+				E800664D184FFBBB00125B31 /* Reachability.m */,
+				E84F0890184E9C3D00185861 /* ECSlidingViewController.h */,
+				E84F0891184E9C3D00185861 /* ECSlidingViewController.m */,
+			);
+			path = ECSlidingViewController;
+			sourceTree = "<group>";
+		};
+		E84F08B1184ECB4600185861 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E84F08B2184ECB6900185861 /* Article.h */,
+				E84F08B3184ECB6900185861 /* Article.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		E87466C418452D580009FF4E = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +157,7 @@
 		E87466CF18452D580009FF4E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E800664A184FFA8500125B31 /* SystemConfiguration.framework */,
 				E87466D018452D580009FF4E /* Foundation.framework */,
 				E87466D218452D580009FF4E /* CoreGraphics.framework */,
 				E87466D418452D580009FF4E /* UIKit.framework */,
@@ -112,13 +169,20 @@
 		E87466D618452D580009FF4E /* Stratosphere */ = {
 			isa = PBXGroup;
 			children = (
+				E8746705184D8B780009FF4E /* resources */,
 				E87466DF18452D580009FF4E /* AppDelegate.h */,
 				E87466E018452D580009FF4E /* AppDelegate.m */,
 				E87466E218452D580009FF4E /* Main.storyboard */,
 				E87466E518452D580009FF4E /* ViewController.h */,
 				E87466E618452D580009FF4E /* ViewController.m */,
+				E84F08AE184EC8E300185861 /* ArticleViewController.h */,
+				E84F08AF184EC8E300185861 /* ArticleViewController.m */,
+				E84F08A5184EBBA600185861 /* DisplayViewController.h */,
+				E84F08A6184EBBA600185861 /* DisplayViewController.m */,
 				E87466E818452D580009FF4E /* Images.xcassets */,
 				E87466D718452D580009FF4E /* Supporting Files */,
+				E84F08B1184ECB4600185861 /* Model */,
+				E800664F1850192A00125B31 /* userinfo.json */,
 			);
 			path = Stratosphere;
 			sourceTree = "<group>";
@@ -150,6 +214,17 @@
 				E87466F818452D590009FF4E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E8746705184D8B780009FF4E /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				E800663E184FDD7A00125B31 /* stratos.png */,
+				E80066531850249600125B31 /* background_640_1136.png */,
+				E8006639184FA89000125B31 /* JSONKit */,
+				E84F088F184E9C3D00185861 /* ECSlidingViewController */,
+			);
+			name = resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,9 +303,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E80066541850249600125B31 /* background_640_1136.png in Resources */,
+				E8006640184FDD7A00125B31 /* stratos.png in Resources */,
 				E87466E918452D580009FF4E /* Images.xcassets in Resources */,
 				E87466DB18452D580009FF4E /* InfoPlist.strings in Resources */,
 				E87466E418452D580009FF4E /* Main.storyboard in Resources */,
+				E80066501850192A00125B31 /* userinfo.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,8 +328,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E87466E718452D580009FF4E /* ViewController.m in Sources */,
+				E84F08A7184EBBA600185861 /* DisplayViewController.m in Sources */,
+				E84F08B4184ECB6900185861 /* Article.m in Sources */,
+				E84F0894184E9C3D00185861 /* ECSlidingViewController.m in Sources */,
 				E87466E118452D580009FF4E /* AppDelegate.m in Sources */,
 				E87466DD18452D580009FF4E /* main.m in Sources */,
+				E800663C184FA8A600125B31 /* JSONKit.m in Sources */,
+				E800664E184FFBBB00125B31 /* Reachability.m in Sources */,
+				E84F08B0184EC8E300185861 /* ArticleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +544,7 @@
 				E874670118452D590009FF4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E874670218452D590009FF4E /* Build configuration list for PBXNativeTarget "StratosphereTests" */ = {
 			isa = XCConfigurationList;
@@ -468,6 +553,7 @@
 				E874670418452D590009FF4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
