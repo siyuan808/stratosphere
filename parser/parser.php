@@ -1,26 +1,97 @@
 <?php
 include 'simple_html_dom.php';
+include 'return_code.php';
+if (!class_exists('S3')) require_once 'S3.php';
+
+if(!isset($_COOKIE['userid'])) { header('Location: ../../login.php'); }
+
+if(!isset($_GET['url'])){ die(''.FAIL.'No GET Received'); }
+
+function upload_to_s3($urlid, $userid) {
+    // AWS access info
+    if (!defined('awsAccessKey')) define('awsAccessKey', 'AKIAIXSCBXNJH42EW6PQ');
+    if (!defined('awsSecretKey')) define('awsSecretKey', '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');
+
+    $uploadFile = "tmp/$urlid.html"; // File to save
+    $bucketName = "ec2-67-202-55-42-stratos-userid-$userid"; // Bucket name
+
+    // Check if our upload file exists
+    if (!file_exists($uploadFile) || !is_file($uploadFile)) die(''.S3_ERROR);
+
+    // Instantiate the s3 class
+    $s3 = new S3(awsAccessKey, awsSecretKey);
+
+    // Create bucket with public read access
+    $s3->putBucket($bucketName, S3::ACL_PUBLIC_READ);
+	
+    // Save file with public read access
+    $s3->putObjectFile($uploadFile, $bucketName, baseName($uploadFile), S3::ACL_PUBLIC_READ);
+}
+
+
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
-define('DEBUG', 0);
-function debug($msg) {
+//define('DEBUG', 0);
+define('FILE', 1);
+
+$userid = $_COOKIE['userid'];
+$url = $_GET['url'];
+//-------------------------------------------------Connect to the database
+$dbhandle = mysql_connect("stratosinstance.cq9eo0agv4tp.us-west-2.rds.amazonaws.com", "stratos", "stratoscloud") 
+		or die(''.DB_ERROR.mysql_error());
+mysql_select_db('stratosphere') or die(''.DB_ERROR.mysql_error());
+$max_query = "select max(urlid) from Url";
+$max_result = mysql_query($max_query) or die(''.DB_ERROR.mysql_error());
+$max_row=mysql_fetch_row($max_result);
+                            
+//Insert New User Info
+				
+$q_urldup = "select * from Url where url = '$url'";
+$r_urldup = mysql_query($q_urldup) or die('Query failed:'.mysql_error());
+
+if(mysql_num_rows($r_urldup)!=0){
+$row_urldup = mysql_fetch_row($r_urldup);
+$urlid = $row_urldup[0];
+
+$q_userdup = "select * from Store where urlid = '$urlid' and uid = '$userid'";
+$r_userdup = mysql_query($q_userdup) or die('Query failed:'.mysql_error());
+
+if(mysql_num_rows($r_userdup)==0){	
+$insertstore = "INSERT INTO Store (uid, urlid, time, is_public, favorite) values ('$userid','$urlid', now(), 0,0);";
+mysql_query($insertstore) or die('first insert'.DB_ERROR.mysql_error());
+	}
+}else{
+//New ID = MAX ID + 1;
+$urlid = intval($max_row[0])+1;
+
+$insert_url = "INSERT INTO Url (urlid, url,is_readable) VALUES ('$urlid','$url',0);";
+mysql_query($insert_url) or die(''.DB_ERROR.mysql_error());
+
+$insert_store = "INSERT INTO Store (uid, urlid, time, is_public, favorite) values ('$userid','$urlid', now(), 0,0);";
+mysql_query($insert_store) or die(''.DB_ERROR.mysql_error());
+}
+
+// --------------------------------------------Create file
+$file = false;
+$filename = "";
+function create_file() {
+    global $file,$urlid, $filename;
+    $filename = "tmp/$urlid.html";
+    $file = fopen($filename, "w");
+    if($file === false) {
+        die(''.FAIL);
+    }
+}
+
+function output($msg) {
+    global $file;
     if(defined('DEBUG'))
 	echo $msg;
+    else if(defined('FILE')) {
+	fwrite($file, $msg);	
+    }
 }
-define('SUCCESS', 200);
-define('EMPTY_PARAMETER', 201);
-define('NOT_VALID_URL', 202);
-define('CANNOT_OPEN', 203);
-
-if(!isset($_GET['userid']) || !isset($_GET['url']))
-{
-    die(''.EMPTY_PARAMETER);
-}
-
-$userid = $_GET['userid'];
-$url = $_GET['url'];
-
 //--------------------------------------------------get host name
 $host_name = get_host_name($url);
 $protocol;
@@ -28,11 +99,12 @@ $protocol;
 
 function get_host_name($url) {
     // Extract the host name from the usrl
+    global $protocol;
     $start = strpos($url, '://');
     if($start === false) {
         die(''.NOT_VALID_URL);
     }
-    $GLOBAL['protocol'] = substr($url, 0, $start+3);
+    $protocol = substr($url, 0, $start+3);
     $start += 3;
     $end = strpos($url, '/', $start);
     if($end === false) 
@@ -41,7 +113,9 @@ function get_host_name($url) {
 	return substr($url, $start, $end-$start);
 }
 
-$html = file_get_html(htmlspecialchars_decode($url));
+$url = htmlspecialchars_decode($url);
+echo $url;
+$html = file_get_html($url);
 if(!isset($html) || !is_object($html)) {
     die(''.CANNOT_OPEN);
 }
@@ -61,9 +135,10 @@ $paras = $html->find('p,pre');
 //-----------------------------------------Now check whether this page is an article or not
 if(!is_article()) {
     //insert the isReadble as false and the original link to the database
-   echo SUCCESS;
    cleanUp(); 
-   die("Not article"); 
+   die(''.SUCCESS); 
+} else {
+    create_file();
 }
 
 //detect whether this page is an article or not
@@ -73,9 +148,9 @@ function is_article() {
     else {
    	$validPara = 0;
 	foreach($paras as $p) {
-	    //debug($p->innertext.'<br>');
+	    // echo $p->innertext.'<br>';
 	    if(isset($p->innertext) && strlen(trim($p->innertext)) > 50) {
-		if(strlen(trim($p->innertext)) > 200)
+		if(strlen(trim($p->innertext)) > 500)
 		    return true;
 		$validPara += 1;
 		if($validPara >= 10)
@@ -89,13 +164,14 @@ function is_article() {
 
 //-----------------------------------------It is an article, start parsing-----------------
 $startNode = find_start_node();
-//debug($title);
-//debug($startNode->outertext);
+//echo $title;
+//echo $startNode->outertext;
 // Get first start tag, from which to start parsing.
 function isMatchTitle($h, $t) {
    if(!isset($h)) return false;
    $hwords = explode(' ', $h); 
    $match = 0;
+   if(strlen($h) <= strlen($t) * 0.3) return false;
    foreach($hwords as $hword) {
         //echo $hword.'<br>';
         if(!isset($hword) || empty($hword)) continue;
@@ -112,16 +188,16 @@ function find_start_node() {
     global $html, $paras, $title, $titleTagText, $startNode;
     /*$node = $firstP->prev_sibling();
     while(isset($node)) {
-        debug($node->tag);
+        echo $node->tag;
         $node = $node->prev_sibling();
     }*/
     $hs = $html->find('h1,h2,h3,h4,h5,h6');
-    //debug($titleTagText.'<br>');
+    //echo $titleTagText.'<br>';
     $titleTagText = utf8_encode($titleTagText);
     if(is_array($hs)) {
         foreach($hs as $h) {
 	    $h->plaintext = utf8_encode($h->plaintext);
-	    //debug($h->plaintext."<br>".$titleTagText."<br><br>");
+	    //echo $h->plaintext."<br>".$titleTagText."<br><br>";
 	    if(strcasecmp($h->plaintext, $titleTagText) == 0) {
 		return $h;
 	    }
@@ -135,12 +211,12 @@ function find_start_node() {
 	    }
 	}
         // there is no match h tags
-	echo $paras[0]->outertext;
+	output($paras[0]->outertext);
 	return $paras[0];
     }
     else {
 	//There is no h tags
-	echo $paras[0]->outertext;
+	output($paras[0]->outertext);
 	return $paras[0];
     }
 }
@@ -165,21 +241,21 @@ function parseNode($node) {
         case "ol":
         case "ul":
 	    if(checkList($node) === true)
-		echo $node->outertext;
+		output($node->outertext);
 	    break;
 	case "p":
 	    if(checkPara($node) === true)
-		echo $node->outertext;
+		output($node->outertext);
 	    break;
 	case "pre":
- 	    echo $node->outertext;
+ 	    output($node->outertext);
 	    break;
 	case "img":
 	    parseSrc($node);
 	    break;
-	case "hr":
-	    echo '<hr>';
-	    break;
+	//case "hr":
+	//    output('<hr>');
+	//    break;
         case "h1":
 	case "h2":
 	case "h3":
@@ -187,7 +263,7 @@ function parseNode($node) {
 	case "h5":
 	case "h6":
 	    if(checkPara($node) === true)
-	        echo $node->outertext;
+	        output('<h3>'.$node->innertext.'</h3>');
 	    break;
  	case "iframe":
 	    parseSrc($node);
@@ -199,7 +275,7 @@ function parseNode($node) {
 		parseNode($node->first_child());	    
  	    break;
         case "table":
-	    //echo $node->outertext;
+	    parseTable($node);
 	    break;
 	default:
 	    break;
@@ -208,26 +284,38 @@ function parseNode($node) {
 } 
 
 //--------------parse an image tag
+function parseTable($node) {
+    //echo $node->outertext;
+    foreach($node->children() as $tr) {
+	foreach($tr->children() as $td) {
+	    //if(checkDiv($td) === true) 
+	    //	output('<p>'.$td->innertext.'</p>');
+	}
+    } 
+}
 function parseSrc($img) {
     //chage the src into hostname + path if possible
     //echo $img->src;    
-    global $url;
+    global $url,$protocol,$host_name;
     if(strpos($img->src, "://") != false)
     {
-	echo $img->outertext;
+	output($img->outertext);
 	return;
     } else {
 	if(strcmp(substr($img->src, 0, 1), '/') == 0) {
 	    //add host name to the src
-	    $img->src = $protocol.$img->src;
-	    echo $img->outertext;    
+//	    echo $procotol;
+	    $img->src = $protocol.$host_name.$img->src;
+//            echo "!!!!".$img->outertext."!!!";
+	    output($img->outertext);    
 	}
 	else {
 	    //add the prarent
 	    $img->src = substr($url, 0, strrpos($url, '/')).'/'.$img->src;
-	    echo $img->outertext;
+	    output($img->outertext);
 	}
     }
+    output('<br>');
 }
 
 function checkList($list) {
@@ -264,35 +352,59 @@ function checkDiv($div) {
     if(isset($div->onclick)) {
 	return false;
     }
-    $r = true;
+    $r = 0;
+    $cnt = 0;
     foreach($div->children() as $e) {
 	switch($e->tag) {
 	    case "p":
-		if(checkPara($e) === false) $r = false;
+		if(checkPara($e) === false) $r++;
+		$cnt++;
 		break;
 	    case "div":
 		//nesty div, the parent one is true
-		if(checkDiv($e) === false) $r = false;
+		if(checkDiv($e) === false) $r++;
+		$cnt+= count($e->children());
 		break;
-	    case "a":
-		$r = false;
-		break;
+	    //case "a":
+	    //	$r++;
+	    //	break;
 	    case "script":
 	    case "a":
-		if(count($div->children) == 1) return false;
+		if($cnt == 1) return false;
+		else $r++;
+		$cnt++;
 		break;
 	    default:
 		break;
 	}
     }
+    if($r >= $cnt) return false;
     return true;
 }
 
 echo SUCCESS;
 cleanUp();
 function cleanUp() {
-    global $html;
+    global $filename,$html,$file,$title,$urlid, $userid;
     $html->clear(); 
+
+    //add title to db 
+    $update_title = "UPDATE Url set title='".mysql_real_escape_string($title)."' where urlid=$urlid";
+    mysql_query($update_title) or die(''.DB_ERROR.mysql_error());
+    if($file !== false) 
+    {
+	fclose($file);
+        //update the db.Ur
+        if(filesize($filename) > 1000) {
+	    $update_url = "UPDATE Url set is_readable=1 where urlid=$urlid;";
+            mysql_query($update_url) or die(''.DB_ERROR.mysql_error());
+	    //upload to s3
+            upload_to_s3($urlid, $userid);
+	}
+	//delete it from server
+	unlink("tmp/$urlid.html");
+    }
+    if(!isset($_GET['extension'])) {header('Location: ../../user.php');} else { header('location: ../../extensiondisplay.php'); }
     unset($GLOBALS['paras']); 
     unset($html);
 }

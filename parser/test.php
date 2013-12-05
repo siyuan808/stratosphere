@@ -3,10 +3,10 @@ include 'simple_html_dom.php';
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
-$userid = $_GET['userid'];
+//$userid = $_GET['userid'];
 #echo $userid;
-$url = $_GET['url'];
-$html = file_get_html($url);
+//$url = $_GET['url'];
+//$html = file_get_html($url);
 //echo $html->plaintext;
 // Find all images 
 //foreach($html->find('img') as $element) 
@@ -27,18 +27,18 @@ $html = file_get_html($url);
 //    echo $div->innertext . '<br>';
 //}
 
-echo "Traversal DOM Tree <br>";
-echo $html->root->outertext;
+//echo "Traversal DOM Tree <br>";
+//echo $html->root->outertext;
 //traversal all the tags
 //traversal($html->root)
-function traversal($node) {
+//function traversal($node) {
     //if(isset($node)) 
-	echo $node->outertext;
+//	echo $node->outertext;
     //else 
-	return;
+//	return;
     //foreach($node->children() as $child)
     //	traversal($child);
-}
+//}
 
 //echo '<img src="facebook.jpg">';
 // Find all links 
@@ -59,16 +59,21 @@ function traversal($node) {
 
 //$e = `touch test.txt`;
 //$e = `chmod 777 test.txt`;
-//$file = fopen( $filename, "w" );
+$filename = "tmp/test.html";
+$file = fopen( $filename, "w" );
 
-//if( $file == false )
-//{
-//   echo ( "Error in opening new file" );
-//   exit();
-//}
-//fwrite( $file, "This is a test\n");
-//fclose( $file );
+if( $file == false )
+{
+   echo ( "Error in opening new file" );
+   exit();
+}
+
+fwrite( $file, "<h1>test</h1>");
+fwrite( $file, "<title>TEST FILE</title>");
+fwrite($file, "hello");
+fclose( $file );
 #identify whether this page is an article or not
-$html->clear(); 
-unset($html);
+//$html->clear(); 
+//unset($html);
+echo 200;
 ?>
