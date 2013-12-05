@@ -91,7 +91,7 @@ $title = '';
 </form>
 									</li>
 									<li> 
-<form id="share" action="userfunction.php" method="POST">
+<form id="share" action="share.php" method="POST">
 <input type="hidden" name="urlid" value="<?php echo $urlid; ?>" />
 <input type="hidden" name="action" value="Share" />
 <a href="javascript: submitform('share')">Share</a>
@@ -182,9 +182,9 @@ $title = '';
 									</header>
 									<p>You can following us.</p>
 									<ul class="icons">
-										<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
-										<li><a href="#" class="fa fa-facebook solo"><span>Facebook</span></a></li>
-										<li><a href="#" class="fa fa-google-plus solo"><span>Google+</span></a></li>
+										<li><a href="https://twitter.com/StratosphereUFL" class="fa fa-twitter solo"><span>Twitter</span></a></li>
+										<li><a href="https://www.facebook.com/profile.php?id=100007212336523" class="fa fa-facebook solo"><span>Facebook</span></a></li>
+										<li><a href="https://plus.google.com/u/0/112539309182150323730/posts" class="fa fa-google-plus solo"><span>Google+</span></a></li>
 									</ul>
 								</section>
 							

@@ -271,9 +271,9 @@ if (isset($_COOKIE['userid'])) {
 									</header>
 									<p>You can following us.</p>
 									<ul class="icons">
-										<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
-										<li><a href="#" class="fa fa-facebook solo"><span>Facebook</span></a></li>
-										<li><a href="#" class="fa fa-google-plus solo"><span>Google+</span></a></li>
+										<li><a href="https://twitter.com/StratosphereUFL" class="fa fa-twitter solo"><span>Twitter</span></a></li>
+										<li><a href="https://www.facebook.com/profile.php?id=100007212336523" class="fa fa-facebook solo"><span>Facebook</span></a></li>
+										<li><a href="https://plus.google.com/u/0/112539309182150323730/posts" class="fa fa-google-plus solo"><span>Google+</span></a></li>
 									</ul>
 								</section>
 							

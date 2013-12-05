@@ -17,8 +17,12 @@ mysql_select_db('stratosphere') or die('Could not select database');
 if(isset($urlid,$fromid)){	
 	
 	if($_POST['action'] == 'Add'){
-		$insert_store = "INSERT INTO Store (uid, urlid, time, is_public, favorite) values ('$uid','$urlid', now(), 0,0);";
-		mysql_query($insert_store) or die('Query failed:'.mysql_error());
+		$retrieve_url = "select * from Url where urlid = '$urlid'";
+		$r_retrieve_url = mysql_query($retrieve_url) or die('Query failed:'.mysql_error());
+		$row_url = mysql_fetch_row($r_retrieve_url);
+		$find_url = $row_url[1];
+		echo $find_url;
+		 header('Location: parser/parser/parser.php?url='.$find_url);
 	}else if($_POST['action'] == 'Delete'){
 		$delete_url = "delete from Share_Url where from_id = '$fromid' and to_id = '$uid' and urlid = '$urlid'";
 		mysql_query($delete_url) or die('Query failed:'.mysql_error());

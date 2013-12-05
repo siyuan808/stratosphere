@@ -1,5 +1,7 @@
 <?php
-if (!isset($_COOKIE['userid'])) {
+if (isset($_COOKIE['userid'])) {
+	//echo 'Welcome ' . $_COOKIE['name'];
+} else {
     header('Location: login.php');
 }
 
@@ -111,7 +113,7 @@ if(isset($flag)){
 						<div class="12u skel-cell-important" id="content">
 							<article id="main" class="special">
 								<header>
-									<h2 style="font-size:2.2em">Share with your friend:</h2>
+									<h2 style="font-size:2.2em">Share With Friend:</h2>
                                   
 								</header>
                                 </br>
@@ -119,10 +121,10 @@ if(isset($flag)){
                                 
                                 <input type="hidden" name="flag" value=1 />
                                 <?php
-									$q_f = "select * from Add_Friend where from_id = '$uid'";
+									$q_f = "select * from Add_Friend where from_id = '$uid' and is_friend = 1";
 									$r_f = mysql_query($q_f) or die('Query failed:'.mysql_error());
 									
-									$q_t = "select * from Add_Friend where to_id = '$uid'";
+									$q_t = "select * from Add_Friend where to_id = '$uid' and is_friend = 1";
 									$r_t = mysql_query($q_t) or die('Query failed:'.mysql_error());
 									
                                     echo "<select style=\"width:230px; margin-left:auto; margin-right:auto;\" name=\"fname\">";

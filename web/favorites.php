@@ -106,6 +106,8 @@ mysql_select_db('stratosphere') or die('Could not select database');
                             	<?php
 									
 									$urlid = $row1[1];
+									$is_public = $row1[3];
+									
 											
 									$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
 									$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
@@ -125,11 +127,17 @@ mysql_select_db('stratosphere') or die('Could not select database');
                                 
                                  
                                  
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Favorite" />
+                                 
                                 
                                  <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Delete" />
                                  
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Public" />
+                                 <?php
+								 if($is_public == 0){
+									 echo"
+                                 <input  style=\"padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;\" class=\"button\" type=\"submit\" name=\"action\" value=\"Public\" />";
+								 }
+								 ?>
+                                 
                                  </form>
                                 
                                  <form style="display:inline;" action="share.php" method="POST">
@@ -154,6 +162,7 @@ mysql_select_db('stratosphere') or die('Could not select database');
                             	<?php
 									
 									$urlid = $row1[1];
+									$is_public = $row1[3];
 											
 									$q2 = "SELECT * FROM Url WHERE urlid = '$urlid'";
 									$st2 = mysql_query($q2) or die('Query failed:'.mysql_error());
@@ -173,11 +182,15 @@ mysql_select_db('stratosphere') or die('Could not select database');
                                 
                                  
                                  
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Favorite" />
+                                
                                 
                                  <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Delete" />
                                  
-                                 <input  style="padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;" class="button" type="submit" name="action" value="Public" />
+                                 <?php
+								 if($is_public == 0){
+                                 echo "<input  style=\"padding: 1px 4px; font-size: 0.8em; color: #FFF8DC;\" class=\"button\" type=\"submit\" name=\"action\" value=\"Public\" />";
+								 }
+								 ?>
                                  </form>
                                 
                                  <form style="display:inline;" action="share.php" method="POST">
@@ -229,9 +242,9 @@ mysql_select_db('stratosphere') or die('Could not select database');
 									<p>You can following us.</p>
 									<ul class="icons">
 
-										<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
-										<li><a href="#" class="fa fa-facebook solo"><span>Facebook</span></a></li>
-										<li><a href="#" class="fa fa-google-plus solo"><span>Google+</span></a></li>
+										<li><a href="https://twitter.com/StratosphereUFL" class="fa fa-twitter solo"><span>Twitter</span></a></li>
+										<li><a href="https://www.facebook.com/profile.php?id=100007212336523" class="fa fa-facebook solo"><span>Facebook</span></a></li>
+										<li><a href="https://plus.google.com/u/0/112539309182150323730/posts" class="fa fa-google-plus solo"><span>Google+</span></a></li>
 									</ul>
 								</section>
 							
