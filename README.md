@@ -1,8 +1,8 @@
 Stratosphere
 ============
-http://ec2-67-202-55-42.compute-1.amazonaws.com
-
 An Online Save-for-Later Service
+---------------
+http://ec2-67-202-55-42.compute-1.amazonaws.com
 
 Yahui Han, Yang Ou, Yi Su, Ruijia Xi, Marc Tucker @UF
 
